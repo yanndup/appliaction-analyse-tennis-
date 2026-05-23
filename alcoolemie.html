@@ -231,10 +231,11 @@
 
     /* ── Modal ── */
     .modal-overlay {
-      position: fixed; inset: 0;
+      position: fixed; top: 0; right: 0; bottom: 0; left: 0;
       background: rgba(0,0,0,0.72);
       z-index: 200;
       display: flex; align-items: flex-end;
+      -webkit-backdrop-filter: blur(4px);
       backdrop-filter: blur(4px);
     }
     .modal-overlay.hidden { display: none; }
@@ -557,13 +558,13 @@ function buildCurve() {
 
   for (let i = 0; i <= MAX_STEPS; i++) {
     const ts   = t0 + i * STEP_MS;
-    const stepH = STEP_MS / 3_600_000;
+    const stepH = STEP_MS / 3600000;
 
     // Absorption from active drinks
     for (const d of sorted) {
       const absEnd = d.ts + d.absMs;
       if (ts >= d.ts && ts < absEnd) {
-        const rate = d.effG / (d.absMs / 3_600_000); // g/hr
+        const rate = d.effG / (d.absMs / 3600000); // g/hr
         blood += rate * stepH;
       }
     }
@@ -585,7 +586,7 @@ function bacAtNow(curve) {
   let best = curve[0];
   for (const p of curve) {
     if (Math.abs(p.ts - now) < Math.abs(best.ts - now)) best = p;
-    if (p.ts > now + 60_000) break;
+    if (p.ts > now + 60000) break;
   }
   return best.bac;
 }
@@ -627,7 +628,7 @@ function buildDrink(drinkId, foodId, ts, vol, deg) {
     name:  drinkId === 'cust' ? `Perso (${vol}mL, ${deg}°)` : dc.name,
     rawG:  raw,
     effG:  parseFloat((raw * fc.factor).toFixed(2)),
-    absMs: Math.round(fc.absH * 3_600_000),
+    absMs: Math.round(fc.absH * 3600000),
     ts,
   };
 }
@@ -770,7 +771,15 @@ function renderChart(curve) {
   if (!curve.length) {
     canvas.style.display = 'none';
     noGraph.style.display = 'flex';
+    noGraph.textContent = 'Ajoutez un verre pour voir le graphique';
     if (chart) { chart.destroy(); chart = null; }
+    return;
+  }
+
+  if (typeof Chart === 'undefined') {
+    canvas.style.display = 'none';
+    noGraph.style.display = 'flex';
+    noGraph.textContent = 'Graphique non disponible (connexion requise au premier chargement)';
     return;
   }
 
@@ -1019,7 +1028,7 @@ document.getElementById('btn-male').className   = state.gender === 'male'   ? 'a
 document.getElementById('btn-female').className = state.gender === 'female' ? 'active' : '';
 
 update();
-setInterval(update, 60_000);   // refresh every minute
+setInterval(update, 60000);   // refresh every minute
 </script>
 </body>
 </html>
