@@ -155,6 +155,7 @@
       float: left; width: calc(50% - 8px); margin: 4px;
       background: var(--surface2); border: 2px solid var(--border);
       border-radius: 12px; padding: 10px 8px; text-align: center; cursor: pointer;
+      -webkit-appearance: none; font-family: inherit; touch-action: manipulation;
     }
     .dchoice.on { border-color: var(--accent); background: rgba(124,111,224,0.14); }
     .dchoice:active { opacity: 0.8; }
@@ -175,6 +176,7 @@
       float: left; width: calc(33.33% - 6px); margin: 3px;
       background: var(--surface2); border: 2px solid var(--border);
       border-radius: 12px; padding: 10px 4px; text-align: center; cursor: pointer;
+      -webkit-appearance: none; font-family: inherit; touch-action: manipulation;
     }
     .fchoice.on { border-color: var(--amber); background: rgba(255,193,7,0.10); }
     .fchoice:active { opacity: 0.8; }
@@ -619,10 +621,10 @@ function renderDGrid() {
   var html='';
   for (var i=0;i<DRINKS.length;i++) {
     var d=DRINKS[i];
-    html+='<div class="dchoice'+(SEL_DRINK===d.id?' on':'')+'" onclick="pickDrink(\''+d.id+'\')">'+
+    html+='<button type="button" class="dchoice'+(SEL_DRINK===d.id?' on':'')+'" onclick="pickDrink(\''+d.id+'\')">'+
       '<div class="dc-em">'+d.e+'</div>'+
       '<div class="dc-nm">'+d.n+'</div>'+
-      '<div class="dc-sb">'+d.s+'</div></div>';
+      '<div class="dc-sb">'+d.s+'</div></button>';
   }
   document.getElementById('drink-grid').innerHTML=html;
   document.getElementById('cust-section').style.display = SEL_DRINK==='cust'?'block':'none';
@@ -631,9 +633,9 @@ function renderFGrid() {
   var html='';
   for (var i=0;i<FOODS.length;i++) {
     var f=FOODS[i];
-    html+='<div class="fchoice'+(SEL_FOOD===f.id?' on':'')+'" onclick="pickFood(\''+f.id+'\')">'+
+    html+='<button type="button" class="fchoice'+(SEL_FOOD===f.id?' on':'')+'" onclick="pickFood(\''+f.id+'\')">'+
       '<div class="fc-em">'+f.e+'</div>'+
-      '<div class="fc-nm">'+f.n+'</div></div>';
+      '<div class="fc-nm">'+f.n+'</div></button>';
   }
   document.getElementById('food-grid').innerHTML=html;
 }
