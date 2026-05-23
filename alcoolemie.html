@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0d0d12">
+  <title>Alcoolémie</title>
+  <style>
+    :root {
+      --bg: #0d0d12;
+      --surface: #16161f;
+      --surface2: #1e1e2a;
+      --border: #2a2a3a;
+      --accent: #7c6fe0;
+      --green: #4caf7d;
+      --amber: #ffc107;
+      --red: #f44336;
+      --text: #e8e8f4;
+      --muted: #888899;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      max-width: 500px;
+      margin: 0 auto;
+      padding-bottom: 80px;
+    }
+
+    .header {
+      background: var(--surface);
+      padding: 20px 16px 16px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .header-lbl { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .bac-num { font-size: 72px; font-weight: 800; line-height: 1; }
+    .bac-unit { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .bac-badge { display: inline-block; margin-top: 10px; padding: 5px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+    .ok    { background: rgba(76,175,125,0.18); color: var(--green); }
+    .warn  { background: rgba(255,193,7,0.18);  color: var(--amber); }
+    .danger{ background: rgba(244,67,54,0.18);  color: var(--red); }
+    .green { color: var(--green); }
+    .amber { color: var(--amber); }
+    .red   { color: var(--red); }
+
+    .content { padding: 12px; }
+    .card { background: var(--surface); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+    .card-lbl { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+
+    .drive-row { display: table; width: 100%; }
+    .drive-icon-cell { display: table-cell; width: 50px; font-size: 34px; vertical-align: middle; }
+    .drive-info { display: table-cell; vertical-align: middle; }
+    .drive-lbl { font-size: 11px; color: var(--muted); }
+    .drive-time { font-size: 24px; font-weight: 800; margin: 2px 0; }
+    .drive-sub { font-size: 11px; color: var(--muted); }
+
+    .profile-row { display: table; width: 100%; }
+    .pcell { display: table-cell; width: 50%; vertical-align: top; padding: 0 6px; }
+    .pcell:first-child { padding-left: 0; }
+    .pcell:last-child  { padding-right: 0; }
+    .pcell label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+    .inp-num {
+      width: 100%; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text); font-size: 20px; font-weight: 700;
+      padding: 10px 12px; outline: none; -webkit-appearance: none;
+      -webkit-text-fill-color: var(--text);
+    }
+    .gender-row { display: table; width: 100%; background: var(--surface2); border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .gbtn {
+      display: table-cell; width: 50%; padding: 12px 6px; border: none;
+      background: transparent; color: var(--muted); font-size: 13px; font-weight: 700;
+      cursor: pointer; text-align: center; font-family: inherit;
+      -webkit-appearance: none; outline: none;
+    }
+    .gbtn.on { background: var(--accent); color: #fff; }
+    .gbtn:active { opacity: 0.8; }
+
+    .btn-add {
+      display: block; width: 100%; padding: 18px 16px; margin-bottom: 12px;
+      background: var(--accent); color: #fff; border: none;
+      border-radius: var(--radius); font-size: 16px; font-weight: 700;
+      cursor: pointer; text-align: center; font-family: inherit;
+      -webkit-appearance: none; outline: none;
+    }
+    .btn-add:active { opacity: 0.8; }
+
+    .drink-row { display: table; width: 100%; padding: 11px 0; border-bottom: 1px solid var(--border); }
+    .drink-row:last-child { border-bottom: none; }
+    .d-emoji { display: table-cell; width: 40px; font-size: 26px; vertical-align: middle; }
+    .d-info  { display: table-cell; vertical-align: middle; }
+    .d-name  { font-size: 14px; font-weight: 600; }
+    .d-meta  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .d-right { display: table-cell; width: 90px; text-align: right; vertical-align: middle; white-space: nowrap; }
+    .d-g     { font-size: 12px; font-weight: 700; color: var(--accent); margin-right: 6px; }
+    .btn-del { display: inline-block; width: 30px; height: 30px; border-radius: 50%; background: rgba(244,67,54,0.12); color: var(--red); border: none; cursor: pointer; font-size: 18px; font-weight: 400; line-height: 30px; text-align: center; font-family: inherit; -webkit-appearance: none; vertical-align: middle; }
+    .btn-del:active { background: rgba(244,67,54,0.3); }
+    .empty { text-align: center; padding: 24px; color: var(--muted); }
+    .empty-icon { font-size: 36px; margin-bottom: 8px; }
+
+    .chart-wrap { height: 230px; position: relative; }
+    .no-chart { height: 230px; display: table; width: 100%; }
+    .no-chart-cell { display: table-cell; text-align: center; vertical-align: middle; color: var(--muted); font-size: 13px; }
+    #bac-canvas { display: block; width: 100%; }
+
+    .btn-clear {
+      display: block; width: 100%; padding: 12px;
+      background: rgba(244,67,54,0.08); color: var(--red);
+      border: 1px solid rgba(244,67,54,0.2); border-radius: var(--radius);
+      font-size: 14px; font-weight: 600; cursor: pointer; text-align: center;
+      margin-bottom: 12px; font-family: inherit; -webkit-appearance: none;
+    }
+    .btn-clear:active { background: rgba(244,67,54,0.2); }
+    .footer { text-align: center; font-size: 11px; color: var(--muted); padding: 6px; line-height: 1.5; }
+
+    #modal-overlay {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 999;
+    }
+    #modal-overlay.show { display: block; }
+    #modal-box {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: var(--surface);
+      border-radius: 22px 22px 0 0;
+      padding: 8px 16px 48px;
+      max-height: 88%;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      border-top: 1px solid var(--border);
+    }
+    .modal-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 10px auto 18px; }
+    .modal-title  { font-size: 18px; font-weight: 700; margin-bottom: 16px; text-align: center; }
+    .section-lbl  { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .preview-box  { text-align: center; padding: 8px; background: rgba(124,111,224,0.1); border-radius: 10px; font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 14px; }
+
+    .d-grid { margin: 0 -4px 14px; overflow: hidden; }
+    .dchoice {
+      float: left; width: calc(50% - 8px); margin: 4px;
+      background: var(--surface2); border: 2px solid var(--border);
+      border-radius: 12px; padding: 10px 8px; text-align: center; cursor: pointer;
+    }
+    .dchoice.on { border-color: var(--accent); background: rgba(124,111,224,0.14); }
+    .dchoice:active { opacity: 0.8; }
+    .dc-em { font-size: 22px; margin-bottom: 3px; }
+    .dc-nm { font-size: 11px; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .dc-sb { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+    .cust-row { overflow: hidden; margin-bottom: 14px; }
+    .cust-col { float: left; width: 48%; }
+    .cust-col:last-child { float: right; }
+    .cust-col label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+    .inp-cust { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 18px; font-weight: 600; padding: 10px 12px; outline: none; -webkit-appearance: none; -webkit-text-fill-color: var(--text); }
+
+    .f-grid { margin: 0 -3px 14px; overflow: hidden; }
+    .fchoice {
+      float: left; width: calc(33.33% - 6px); margin: 3px;
+      background: var(--surface2); border: 2px solid var(--border);
+      border-radius: 12px; padding: 10px 4px; text-align: center; cursor: pointer;
+    }
+    .fchoice.on { border-color: var(--amber); background: rgba(255,193,7,0.10); }
+    .fchoice:active { opacity: 0.8; }
+    .fc-em { font-size: 20px; margin-bottom: 3px; }
+    .fc-nm { font-size: 10px; font-weight: 700; color: var(--muted); line-height: 1.2; }
+
+    .inp-time { display: block; width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 22px; font-weight: 700; padding: 12px; outline: none; margin-bottom: 14px; text-align: center; -webkit-appearance: none; -webkit-text-fill-color: var(--text); }
+
+    .btn-ok {
+      display: block; width: 100%; padding: 16px;
+      background: var(--accent); color: #fff; border: none;
+      border-radius: var(--radius); font-size: 16px; font-weight: 700;
+      cursor: pointer; font-family: inherit; -webkit-appearance: none;
+    }
+    .btn-ok:active { opacity: 0.8; }
+    .clearfix:after { content: ''; display: table; clear: both; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-lbl">Alcoolémie actuelle</div>
+  <div class="bac-num green" id="bac-num">0.00</div>
+  <div class="bac-unit">g/L de sang</div>
+  <div class="bac-badge ok" id="bac-badge">✓ Peut conduire</div>
+</div>
+
+<div class="content">
+
+  <div class="card">
+    <div class="card-lbl">Conduite autorisée</div>
+    <div class="drive-row">
+      <div class="drive-icon-cell" id="drive-icon">🟢</div>
+      <div class="drive-info">
+        <div class="drive-lbl">Limite légale France — 0,5 g/L</div>
+        <div class="drive-time green" id="drive-time">Maintenant ✓</div>
+        <div class="drive-sub" id="drive-sub">Jeune conducteur : 0,2 g/L</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-lbl">Votre profil</div>
+    <div class="profile-row clearfix">
+      <div class="pcell">
+        <label>Poids (kg)</label>
+        <input class="inp-num" type="number" id="inp-weight" value="70" min="40" max="200" onchange="onWeightChange(this.value)">
+      </div>
+      <div class="pcell">
+        <label>Genre</label>
+        <div class="gender-row">
+          <button class="gbtn on" id="btn-male"   onclick="setGender('male')">Homme</button>
+          <button class="gbtn"    id="btn-female" onclick="setGender('female')">Femme</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-add" onclick="openModal()">+  Ajouter un verre</button>
+
+  <div class="card">
+    <div class="card-lbl">Verres du jour</div>
+    <div id="drinks-list"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-lbl">Évolution de l'alcoolémie</div>
+    <div class="chart-wrap">
+      <div class="no-chart" id="no-chart">
+        <div class="no-chart-cell">Ajoutez un verre pour voir le graphique</div>
+      </div>
+      <canvas id="bac-canvas" style="display:none"></canvas>
+    </div>
+  </div>
+
+  <button class="btn-clear" onclick="clearAll()">Effacer tous les verres</button>
+  <div class="footer" id="footer">Chargement...</div>
+
+</div>
+
+<div id="modal-overlay" onclick="overlayClick(event)">
+  <div id="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Ajouter un verre</div>
+    <div class="section-lbl">Type de boisson</div>
+    <div class="d-grid clearfix" id="drink-grid"></div>
+    <div id="cust-section" style="display:none">
+      <div class="section-lbl">Personnalisé</div>
+      <div class="cust-row clearfix">
+        <div class="cust-col">
+          <label>Volume (mL)</label>
+          <input class="inp-cust" type="number" id="inp-vol" value="250" min="10" max="2000" oninput="refreshPreview()">
+        </div>
+        <div class="cust-col">
+          <label>Degré</label>
+          <input class="inp-cust" type="number" id="inp-deg" value="5" min="0.5" max="95" step="0.1" oninput="refreshPreview()">
+        </div>
+      </div>
+    </div>
+    <div class="preview-box" id="preview-box">10,0 g d'alcool pur</div>
+    <div class="section-lbl">Contexte alimentaire</div>
+    <div class="f-grid clearfix" id="food-grid"></div>
+    <div class="section-lbl">Heure de consommation</div>
+    <input class="inp-time" type="time" id="inp-time">
+    <button class="btn-ok" onclick="confirmDrink()">Ajouter ce verre</button>
+  </div>
+</div>
+
+<script>
+var LEGAL=0.5,YOUNG=0.2,ELIM=0.15;
+var DRINKS=[
+  {id:'b25',e:'🍺',n:'Bière 25cl',s:'5 degres - 10g',g:10.0},
+  {id:'b50',e:'🍺',n:'Bière 50cl',s:'5 degres - 20g',g:20.0},
+  {id:'vin',e:'🍷',n:'Vin 12cl',s:'12 degres - 11.5g',g:11.5},
+  {id:'champ',e:'🥂',n:'Champagne 12cl',s:'12 degres - 11.5g',g:11.5},
+  {id:'aper',e:'🍸',n:'Aperitif 6cl',s:'18 degres - 8.6g',g:8.6},
+  {id:'whis',e:'🥃',n:'Whisky 4cl',s:'40 degres - 12.8g',g:12.8},
+  {id:'cock',e:'🍹',n:'Cocktail 12cl',s:'10 degres - 9.6g',g:9.6},
+  {id:'cust',e:'?',n:'Personnalise',s:'Saisie libre',g:0}
+];
+var FOODS=[
+  {id:'empty',e:'!',n:'A jeun',f:1.00,h:0.50},
+  {id:'snack',e:'*',n:'Apero',f:0.92,h:0.75},
+  {id:'meal',e:'=',n:'Repas',f:0.75,h:1.50},
+  {id:'dessert',e:'+',n:'Dessert',f:0.70,h:1.75},
+  {id:'gouter',e:'-',n:'Gouter',f:0.85,h:1.00}
+];
+var ST={weight:70,gender:'male',drinks:[]};
+var SEL_DRINK='b25',SEL_FOOD='empty';
+function pad(n){return n<10?'0'+n:''+n;}
+function fmtTs(ts){var d=new Date(ts);return pad(d.getHours())+'h'+pad(d.getMinutes());}
+function getDrink(id){for(var i=0;i<DRINKS.length;i++)if(DRINKS[i].id===id)return DRINKS[i];}
+function getFood(id){for(var i=0;i<FOODS.length;i++)if(FOODS[i].id===id)return FOODS[i];}
+function rawGrams(did,vol,deg){if(did==='cust')return Math.round(vol*(deg/100)*0.8*10)/10;return getDrink(did).g;}
+function loadST(){try{var s=JSON.parse(localStorage.getItem('bac4')||'{}');if(s.weight)ST.weight=+s.weight;if(s.gender)ST.gender=s.gender;var cut=Date.now()-86400000;ST.drinks=(s.drinks||[]).filter(function(d){return d.ts>=cut;});}catch(e){}}
+function saveST(){try{localStorage.setItem('bac4',JSON.stringify(ST));}catch(e){}}
+function buildCurve(){if(!ST.drinks.length)return[];var r=ST.gender==='male'?0.7:0.6,w=ST.weight,elimGPH=ELIM*w*r;var sorted=ST.drinks.slice().sort(function(a,b){return a.ts-b.ts;});var t0=sorted[0].ts,STEP=300000,blood=0,pts=[];for(var i=0;i<=288;i++){var ts=t0+i*STEP,sh=STEP/3600000;for(var j=0;j<sorted.length;j++){var d=sorted[j];if(ts>=d.ts&&ts<d.ts+d.am){blood+=(d.eg/(d.am/3600000))*sh;}}blood=blood>elimGPH*sh?blood-elimGPH*sh:0;var bac=parseFloat((blood/(w*r)).toFixed(4));pts.push({ts:ts,bac:bac});if(bac<0.001&&i>12)break;}return pts;}
+function bacNow(pts){if(!pts.length)return 0;var now=Date.now(),best=pts[0];for(var i=0;i<pts.length;i++){if(Math.abs(pts[i].ts-now)<Math.abs(best.ts-now))best=pts[i];if(pts[i].ts>now+60000)break;}return best.bac;}
+function driveTs(pts){var now=Date.now();for(var i=0;i<pts.length;i++){if(pts[i].ts>=now&&pts[i].bac<LEGAL)return pts[i].ts;}return null;}
+function renderBAC(bac){var v=document.getElementById('bac-num'),s=document.getElementById('bac-badge');v.innerHTML=bac.toFixed(2);if(bac>=LEGAL){v.className='bac-num red';s.innerHTML='Ne pas conduire';s.className='bac-badge danger';}else if(bac>=YOUNG){v.className='bac-num amber';s.innerHTML='Limite jeune conducteur';s.className='bac-badge warn';}else{v.className='bac-num green';s.innerHTML='Peut conduire';s.className='bac-badge ok';}}
+function renderDrive(pts){var bac=bacNow(pts),now=Date.now(),dtEl=document.getElementById('drive-time'),diEl=document.getElementById('drive-icon'),dsEl=document.getElementById('drive-sub');if(bac<LEGAL){diEl.innerHTML='OK';dtEl.className='drive-time green';dtEl.innerHTML='Maintenant';dsEl.innerHTML='Limite jeune conducteur : 0.2 g/L';return;}var ts=driveTs(pts);diEl.innerHTML='!';dtEl.className='drive-time red';if(!ts){dtEl.innerHTML='> 24 h';dsEl.innerHTML='Trop alcool';return;}var mins=Math.ceil((ts-now)/60000),h=Math.floor(mins/60),m=mins%60;dtEl.innerHTML=fmtTs(ts);dsEl.innerHTML=h>0?'Dans '+h+'h'+(m?m+'min':'')+' - Limite 0.5 g/L':'Dans '+m+' min - Limite 0.5 g/L';}
+function renderList(){var el=document.getElementById('drinks-list');if(!ST.drinks.length){el.innerHTML='<div class="empty"><div class="empty-icon">--</div><div>Aucun verre ajouté</div></div>';return;}var sorted=ST.drinks.slice().sort(function(a,b){return a.ts-b.ts;}),html='';for(var i=0;i<sorted.length;i++){var d=sorted[i];html+='<div class="drink-row"><div class="d-emoji">'+d.em+'</div><div class="d-info"><div class="d-name">'+d.nm+'</div><div class="d-meta">'+fmtTs(d.ts)+' - '+getFood(d.fi).n+' - '+d.rg+'g</div></div><div class="d-right"><span class="d-g">+'+d.rg+'g</span><button class="btn-del" onclick="delDrink(\'' +d.id+ '\')">X</button></div></div>';}el.innerHTML=html;}
+function drawChart(pts){var canvas=document.getElementById('bac-canvas'),noChart=document.getElementById('no-chart');if(!pts.length){canvas.style.display='none';noChart.style.display='table';return;}canvas.style.display='block';noChart.style.display='none';var wrap=canvas.parentElement,CW=wrap.clientWidth||300,CH=220,DPR=window.devicePixelRatio||1;canvas.width=Math.round(CW*DPR);canvas.height=Math.round(CH*DPR);canvas.style.width=CW+'px';canvas.style.height=CH+'px';var ctx=canvas.getContext('2d');ctx.scale(DPR,DPR);var W=CW,H=CH,ml=42,mr=10,mt=22,mb=30,pw=W-ml-mr,ph=H-mt-mb,now=Date.now();var spts=[];for(var i=0;i<pts.length;i+=3)spts.push(pts[i]);if(spts[spts.length-1]!==pts[pts.length-1])spts.push(pts[pts.length-1]);var minTs=spts[0].ts,maxTs=spts[spts.length-1].ts,maxBac=0;for(var i=0;i<spts.length;i++)if(spts[i].bac>maxBac)maxBac=spts[i].bac;if(maxBac<0.55)maxBac=0.55;var yMax=Math.ceil(maxBac/0.2)*0.2+0.1;function xp(ts){return ml+(ts-minTs)/(maxTs-minTs)*pw;}function yp(bac){return mt+ph*(1-bac/yMax);}ctx.clearRect(0,0,W,H);ctx.fillStyle='#1a1a24';ctx.fillRect(ml,mt,pw,ph);ctx.font='10px sans-serif';ctx.textAlign='right';for(var v=0;v<=yMax+0.01;v+=0.2){var ypv=yp(v);if(ypv<mt-1||ypv>mt+ph+1)continue;ctx.strokeStyle='#2a2a3a';ctx.lineWidth=1;ctx.setLineDash([]);ctx.beginPath();ctx.moveTo(ml,ypv);ctx.lineTo(ml+pw,ypv);ctx.stroke();ctx.fillStyle='#888899';ctx.fillText(v.toFixed(1),ml-4,ypv+3);}function hRef(val,col,lbl){var ypv=yp(val);if(ypv<mt||ypv>mt+ph)return;ctx.save();ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(ml,ypv);ctx.lineTo(ml+pw,ypv);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=col;ctx.font='bold 10px sans-serif';ctx.textAlign='right';ctx.fillText(lbl,ml+pw-2,ypv-3);ctx.restore();}hRef(LEGAL,'rgba(244,67,54,0.9)','0.5 g/L');hRef(YOUNG,'rgba(255,193,7,0.85)','0.2 g/L');var nx=Math.min(Math.max(xp(now),ml),ml+pw);ctx.save();ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(nx,mt);ctx.lineTo(nx,mt+ph);ctx.stroke();ctx.setLineDash([]);ctx.restore();var past=[],future=[];for(var i=0;i<spts.length;i++){(spts[i].ts<=now?past:future).push(spts[i]);}if(past.length&&future.length)future.unshift(past[past.length-1]);if(past.length>1){ctx.beginPath();ctx.moveTo(xp(past[0].ts),yp(0));for(var i=0;i<past.length;i++)ctx.lineTo(xp(past[i].ts),yp(past[i].bac));ctx.lineTo(xp(past[past.length-1].ts),yp(0));ctx.closePath();ctx.fillStyle='rgba(124,111,224,0.15)';ctx.fill();ctx.beginPath();ctx.moveTo(xp(past[0].ts),yp(past[0].bac));for(var i=1;i<past.length;i++)ctx.lineTo(xp(past[i].ts),yp(past[i].bac));ctx.strokeStyle='#7c6fe0';ctx.lineWidth=2.5;ctx.setLineDash([]);ctx.stroke();}if(future.length>1){ctx.beginPath();ctx.moveTo(xp(future[0].ts),yp(future[0].bac));for(var i=1;i<future.length;i++)ctx.lineTo(xp(future[i].ts),yp(future[i].bac));ctx.strokeStyle='rgba(124,111,224,0.55)';ctx.lineWidth=2;ctx.setLineDash([6,4]);ctx.stroke();ctx.setLineDash([]);}ctx.fillStyle='#888899';ctx.font='10px sans-serif';ctx.textAlign='center';var spanH=(maxTs-minTs)/3600000,hStep=spanH<=6?1:spanH<=12?2:3,d0=new Date(minTs),startH=d0.getHours()+1;for(var h=startH;h<=startH+26;h+=hStep){var dd=new Date(minTs);dd.setHours(h%24,0,0,0);if(h>=24)dd.setDate(dd.getDate()+Math.floor(h/24));if(dd.getTime()>maxTs+60000)break;var txp=xp(dd.getTime());if(txp<ml+8||txp>ml+pw-4)continue;ctx.fillText(pad(h%24)+'h',txp,mt+ph+16);ctx.strokeStyle='#2a2a3a';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(txp,mt+ph);ctx.lineTo(txp,mt+ph+4);ctx.stroke();}ctx.strokeStyle='#2a2a3a';ctx.lineWidth=1;ctx.setLineDash([]);ctx.strokeRect(ml,mt,pw,ph);}
+function update(){var pts=buildCurve();renderBAC(bacNow(pts));renderDrive(pts);renderList();drawChart(pts);document.getElementById('footer').innerHTML='JS actif - '+new Date().toLocaleTimeString();}
+function onWeightChange(v){v=parseFloat(v);if(v>=40&&v<=200){ST.weight=v;saveST();update();}}
+function setGender(g){ST.gender=g;document.getElementById('btn-male').className=g==='male'?'gbtn on':'gbtn';document.getElementById('btn-female').className=g==='female'?'gbtn on':'gbtn';saveST();update();}
+function delDrink(id){ST.drinks=ST.drinks.filter(function(d){return d.id!==id;});saveST();update();}
+function clearAll(){if(confirm('Effacer tous les verres ?')){ST.drinks=[];saveST();update();}}
+function openModal(){var now=new Date();document.getElementById('inp-time').value=pad(now.getHours())+':'+pad(now.getMinutes());document.getElementById('modal-overlay').className='show';renderDGrid();renderFGrid();refreshPreview();}
+function closeModal(){document.getElementById('modal-overlay').className='';}
+function overlayClick(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
+function renderDGrid(){var html='';for(var i=0;i<DRINKS.length;i++){var d=DRINKS[i];html+='<div class="dchoice'+(SEL_DRINK===d.id?' on':'')+" onclick=\"pickDrink('" +d.id+ "')\">"+"<div class=\"dc-em\">"+d.e+"</div><div class=\"dc-nm\">"+d.n+"</div><div class=\"dc-sb\">"+d.s+"</div></div>";}document.getElementById('drink-grid').innerHTML=html;document.getElementById('cust-section').style.display=SEL_DRINK==='cust'?'block':'none';}
+function renderFGrid(){var html='';for(var i=0;i<FOODS.length;i++){var f=FOODS[i];html+='<div class="fchoice'+(SEL_FOOD===f.id?' on':'')+" onclick=\"pickFood('" +f.id+ "')\">"+"<div class=\"fc-em\">"+f.e+"</div><div class=\"fc-nm\">"+f.n+"</div></div>";}document.getElementById('food-grid').innerHTML=html;}
+function pickDrink(id){SEL_DRINK=id;renderDGrid();refreshPreview();}
+function pickFood(id){SEL_FOOD=id;renderFGrid();refreshPreview();}
+function refreshPreview(){var vol=parseFloat(document.getElementById('inp-vol').value)||250,deg=parseFloat(document.getElementById('inp-deg').value)||5,rg=rawGrams(SEL_DRINK,vol,deg),fc=getFood(SEL_FOOD);document.getElementById('preview-box').innerHTML=rg.toFixed(1)+' g alcool pur - absorbe : '+(rg*fc.f).toFixed(1)+' g ('+fc.n+')';}
+function confirmDrink(){var tv=document.getElementById('inp-time').value;if(!tv){alert('Indiquez l heure.');return;}var parts=tv.split(':'),ts=new Date();ts.setHours(parseInt(parts[0],10),parseInt(parts[1],10),0,0);var vol=parseFloat(document.getElementById('inp-vol').value)||250,deg=parseFloat(document.getElementById('inp-deg').value)||5,dc=getDrink(SEL_DRINK),fc=getFood(SEL_FOOD),rg=rawGrams(SEL_DRINK,vol,deg);ST.drinks.push({id:Date.now().toString(16)+(Math.random()*65536|0).toString(16),em:dc.e,nm:SEL_DRINK==='cust'?'Perso ('+vol+'mL '+deg+'deg)':dc.n,fi:SEL_FOOD,rg:rg,eg:parseFloat((rg*fc.f).toFixed(2)),am:Math.round(fc.h*3600000),ts:ts.getTime()});saveST();closeModal();update();}
+loadST();
+document.getElementById('inp-weight').value=ST.weight;
+document.getElementById('btn-male').className=ST.gender==='male'?'gbtn on':'gbtn';
+document.getElementById('btn-female').className=ST.gender==='female'?'gbtn on':'gbtn';
+update();
+setInterval(update,60000);
+</script>
+</body>
+</html>
