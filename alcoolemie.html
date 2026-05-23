@@ -354,6 +354,7 @@ var SEL_DRINK = 'b25', SEL_FOOD = 'empty', SEL_DEG = 5.0;
 var EDITING_ID = null;
 var lastPts = [];
 var chartPanMs = 0, chartTouchX = null, chartTouchPan = null;
+var modalCloseTimeout = null;
 
 function pad(n) { return n < 10 ? '0'+n : ''+n; }
 function fmtTs(ts) { var d=new Date(ts); return pad(d.getHours())+'h'+pad(d.getMinutes()); }
@@ -765,6 +766,7 @@ function deleteFromModal() {
 }
 
 function showModal() {
+  if (modalCloseTimeout) { clearTimeout(modalCloseTimeout); modalCloseTimeout = null; }
   var ov = document.getElementById('modal-overlay');
   ov.style.display = 'block';
   requestAnimationFrame(function(){ requestAnimationFrame(function(){ ov.className='show'; }); });
@@ -772,7 +774,12 @@ function showModal() {
 function closeModal() {
   var ov = document.getElementById('modal-overlay');
   ov.className = '';
-  setTimeout(function(){ ov.style.display='none'; EDITING_ID = null; }, 360);
+  if (modalCloseTimeout) clearTimeout(modalCloseTimeout);
+  modalCloseTimeout = setTimeout(function(){
+    ov.style.display = 'none';
+    EDITING_ID = null;
+    modalCloseTimeout = null;
+  }, 360);
 }
 function overlayClick(e) {
   if (e.target === document.getElementById('modal-overlay')) closeModal();
@@ -838,6 +845,8 @@ function confirmDrink() {
   if (!tv) { alert("Veuillez indiquer l'heure."); return; }
   var parts = tv.split(':');
   var ts = new Date(); ts.setHours(parseInt(parts[0],10), parseInt(parts[1],10), 0, 0);
+  /* si l'heure indiquée est plus d'1h dans le futur, on considère que c'était hier */
+  if (ts.getTime() > Date.now() + 3600000) ts.setDate(ts.getDate() - 1);
   var vol = parseFloat(document.getElementById('inp-vol').value) || 250;
   var dc = getDrink(SEL_DRINK), fc = getFood(SEL_FOOD);
   var rg = rawGrams(SEL_DRINK, SEL_DEG, vol);
