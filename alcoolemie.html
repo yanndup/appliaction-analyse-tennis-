@@ -8,36 +8,20 @@
   <title>Alcoolémie</title>
   <style>
     :root {
-      --bg: #0d0d12;
-      --surface: #16161f;
-      --surface2: #1e1e2a;
-      --border: #2a2a3a;
-      --accent: #7c6fe0;
-      --green: #4caf7d;
-      --amber: #ffc107;
-      --red: #f44336;
-      --text: #e8e8f4;
-      --muted: #888899;
-      --radius: 16px;
+      --bg: #0d0d12; --surface: #16161f; --surface2: #1e1e2a;
+      --border: #2a2a3a; --accent: #7c6fe0;
+      --green: #4caf7d; --amber: #ffc107; --red: #f44336;
+      --text: #e8e8f4; --muted: #888899; --radius: 16px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      min-height: 100vh;
-      max-width: 500px;
-      margin: 0 auto;
-      padding-bottom: 80px;
+      background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh; max-width: 500px; margin: 0 auto; padding-bottom: 104px;
     }
-
-    /* Header */
     .header {
-      background: var(--surface);
-      padding: 20px 16px 16px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
+      background: var(--surface); padding: 20px 16px 16px;
+      text-align: center; border-bottom: 1px solid var(--border);
     }
     .header-lbl { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
     .bac-num { font-size: 72px; font-weight: 800; line-height: 1; }
@@ -46,56 +30,50 @@
     .ok    { background: rgba(76,175,125,0.18); color: var(--green); }
     .warn  { background: rgba(255,193,7,0.18);  color: var(--amber); }
     .danger{ background: rgba(244,67,54,0.18);  color: var(--red); }
-    .green { color: var(--green); }
-    .amber { color: var(--amber); }
-    .red   { color: var(--red); }
+    .green { color: var(--green); } .amber { color: var(--amber); } .red { color: var(--red); }
 
-    /* Content */
     .content { padding: 12px; }
     .card { background: var(--surface); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px; border: 1px solid var(--border); }
     .card-lbl { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
 
-    /* Drive */
     .drive-row { display: table; width: 100%; }
     .drive-icon-cell { display: table-cell; width: 50px; font-size: 34px; vertical-align: middle; }
     .drive-info { display: table-cell; vertical-align: middle; }
-    .drive-lbl { font-size: 11px; color: var(--muted); }
+    .drive-lbl  { font-size: 11px; color: var(--muted); }
     .drive-time { font-size: 24px; font-weight: 800; margin: 2px 0; }
-    .drive-sub { font-size: 11px; color: var(--muted); }
+    .drive-sub  { font-size: 11px; color: var(--muted); }
 
-    /* Profile */
-    .profile-row { display: table; width: 100%; border-spacing: 12px 0; margin: -12px; }
+    .profile-row { display: table; width: 100%; }
     .pcell { display: table-cell; width: 50%; vertical-align: top; padding: 0 6px; }
-    .pcell:first-child { padding-left: 0; }
-    .pcell:last-child  { padding-right: 0; }
+    .pcell:first-child { padding-left: 0; } .pcell:last-child { padding-right: 0; }
     .pcell label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
     .inp-num {
       width: 100%; background: var(--surface2); border: 1px solid var(--border);
       border-radius: 10px; color: var(--text); font-size: 20px; font-weight: 700;
-      padding: 10px 12px; outline: none; -webkit-appearance: none;
-      -webkit-text-fill-color: var(--text);
+      padding: 10px 12px; outline: none; -webkit-appearance: none; -webkit-text-fill-color: var(--text);
     }
     .gender-row { display: table; width: 100%; background: var(--surface2); border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
     .gbtn {
       display: table-cell; width: 50%; padding: 12px 6px; border: none;
       background: transparent; color: var(--muted); font-size: 13px; font-weight: 700;
       cursor: pointer; text-align: center; font-family: inherit;
-      -webkit-appearance: none; outline: none;
+      -webkit-appearance: none; outline: none; touch-action: manipulation;
     }
     .gbtn.on { background: var(--accent); color: #fff; }
     .gbtn:active { opacity: 0.8; }
 
-    /* Big add button */
-    .btn-add {
-      display: block; width: 100%; padding: 18px 16px; margin-bottom: 12px;
-      background: var(--accent); color: #fff; border: none;
-      border-radius: var(--radius); font-size: 16px; font-weight: 700;
-      cursor: pointer; text-align: center; font-family: inherit;
-      -webkit-appearance: none; outline: none;
+    /* FAB */
+    .fab {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      width: 220px; height: 54px; background: var(--accent); color: #fff; border: none;
+      border-radius: 27px; font-size: 17px; font-weight: 600; letter-spacing: -0.2px;
+      cursor: pointer; font-family: inherit; -webkit-appearance: none;
+      touch-action: manipulation; z-index: 100;
+      box-shadow: 0 4px 24px rgba(124,111,224,0.5);
+      transition: transform 0.15s, opacity 0.15s;
     }
-    .btn-add:active { opacity: 0.8; }
+    .fab:active { opacity: 0.85; transform: translateX(-50%) scale(0.96); }
 
-    /* Drinks list */
     .drink-row { display: table; width: 100%; padding: 11px 0; border-bottom: 1px solid var(--border); }
     .drink-row:last-child { border-bottom: none; }
     .d-emoji { display: table-cell; width: 40px; font-size: 26px; vertical-align: middle; }
@@ -104,7 +82,7 @@
     .d-meta  { font-size: 11px; color: var(--muted); margin-top: 2px; }
     .d-right { display: table-cell; width: 90px; text-align: right; vertical-align: middle; white-space: nowrap; }
     .d-g     { font-size: 12px; font-weight: 700; color: var(--accent); margin-right: 6px; }
-    .btn-del { display: inline-block; width: 30px; height: 30px; border-radius: 50%; background: rgba(244,67,54,0.12); color: var(--red); border: none; cursor: pointer; font-size: 18px; font-weight: 400; line-height: 30px; text-align: center; font-family: inherit; -webkit-appearance: none; vertical-align: middle; }
+    .btn-del { display: inline-block; width: 30px; height: 30px; border-radius: 50%; background: rgba(244,67,54,0.12); color: var(--red); border: none; cursor: pointer; font-size: 18px; line-height: 30px; text-align: center; font-family: inherit; -webkit-appearance: none; vertical-align: middle; touch-action: manipulation; }
     .btn-del:active { background: rgba(244,67,54,0.3); }
     .empty { text-align: center; padding: 24px; color: var(--muted); }
     .empty-icon { font-size: 36px; margin-bottom: 8px; }
@@ -114,42 +92,39 @@
     .no-chart { height: 230px; display: table; width: 100%; }
     .no-chart-cell { display: table-cell; text-align: center; vertical-align: middle; color: var(--muted); font-size: 13px; }
     #bac-canvas { display: block; width: 100%; }
+    .chart-hint { text-align: center; font-size: 10px; color: var(--muted); padding: 5px 0 0; }
 
-    /* Clear button */
     .btn-clear {
       display: block; width: 100%; padding: 12px;
       background: rgba(244,67,54,0.08); color: var(--red);
       border: 1px solid rgba(244,67,54,0.2); border-radius: var(--radius);
       font-size: 14px; font-weight: 600; cursor: pointer; text-align: center;
-      margin-bottom: 12px; font-family: inherit; -webkit-appearance: none;
+      margin-bottom: 12px; font-family: inherit; -webkit-appearance: none; touch-action: manipulation;
     }
     .btn-clear:active { background: rgba(244,67,54,0.2); }
     .footer { text-align: center; font-size: 11px; color: var(--muted); padding: 6px; line-height: 1.5; }
 
-    /* Modal */
+    /* Modal — slide up */
     #modal-overlay {
-      display: none;
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.75);
-      z-index: 999;
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0); z-index: 999;
+      transition: background 0.3s;
     }
-    #modal-overlay.show { display: block; }
+    #modal-overlay.show { background: rgba(0,0,0,0.72); }
     #modal-box {
       position: absolute; bottom: 0; left: 0; right: 0;
-      background: var(--surface);
-      border-radius: 22px 22px 0 0;
-      padding: 8px 16px 48px;
-      max-height: 88%;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      border-top: 1px solid var(--border);
+      background: var(--surface); border-radius: 22px 22px 0 0;
+      padding: 8px 16px 52px; max-height: 92%; overflow-y: auto;
+      -webkit-overflow-scrolling: touch; border-top: 1px solid var(--border);
+      transform: translateY(100%);
+      transition: transform 0.36s cubic-bezier(0.32, 0.72, 0, 1);
     }
+    #modal-overlay.show #modal-box { transform: translateY(0); }
     .modal-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 10px auto 18px; }
     .modal-title  { font-size: 18px; font-weight: 700; margin-bottom: 16px; text-align: center; }
     .section-lbl  { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
     .preview-box  { text-align: center; padding: 8px; background: rgba(124,111,224,0.1); border-radius: 10px; font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 14px; }
 
-    /* Drink grid in modal */
     .d-grid { margin: 0 -4px 14px; overflow: hidden; }
     .dchoice {
       float: left; width: calc(50% - 8px); margin: 4px;
@@ -163,14 +138,26 @@
     .dc-nm { font-size: 11px; font-weight: 700; color: var(--text); line-height: 1.2; }
     .dc-sb { font-size: 10px; color: var(--muted); margin-top: 2px; }
 
-    /* Custom row */
-    .cust-row { overflow: hidden; margin-bottom: 14px; }
-    .cust-col { float: left; width: 48%; }
-    .cust-col:last-child { float: right; }
-    .cust-col label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+    /* Degree stepper */
+    .deg-row { display: table; width: 100%; margin-bottom: 14px; }
+    .deg-lbl-cell { display: table-cell; vertical-align: middle; }
+    .deg-lbl { font-size: 13px; color: var(--muted); font-weight: 600; }
+    .deg-ctrl-cell { display: table-cell; text-align: right; vertical-align: middle; }
+    .deg-ctrl { display: inline-flex; align-items: center; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .deg-btn {
+      width: 44px; height: 44px; border: none; background: transparent; color: var(--text);
+      font-size: 24px; font-weight: 300; cursor: pointer; font-family: inherit;
+      -webkit-appearance: none; touch-action: manipulation; flex-shrink: 0;
+    }
+    .deg-btn:active { background: var(--border); }
+    .deg-num { min-width: 56px; text-align: center; font-size: 18px; font-weight: 700; color: var(--text); }
+    .deg-unit { font-size: 12px; color: var(--muted); font-weight: 400; }
+
+    /* Custom volume row */
+    .vol-row { margin-bottom: 14px; }
+    .vol-row label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
     .inp-cust { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 18px; font-weight: 600; padding: 10px 12px; outline: none; -webkit-appearance: none; -webkit-text-fill-color: var(--text); }
 
-    /* Food grid */
     .f-grid { margin: 0 -3px 14px; overflow: hidden; }
     .fchoice {
       float: left; width: calc(33.33% - 6px); margin: 3px;
@@ -183,23 +170,18 @@
     .fc-em { font-size: 20px; margin-bottom: 3px; }
     .fc-nm { font-size: 10px; font-weight: 700; color: var(--muted); line-height: 1.2; }
 
-    /* Time input */
     .inp-time { display: block; width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 22px; font-weight: 700; padding: 12px; outline: none; margin-bottom: 14px; text-align: center; -webkit-appearance: none; -webkit-text-fill-color: var(--text); }
-
     .btn-ok {
-      display: block; width: 100%; padding: 16px;
-      background: var(--accent); color: #fff; border: none;
+      display: block; width: 100%; padding: 16px; background: var(--accent); color: #fff; border: none;
       border-radius: var(--radius); font-size: 16px; font-weight: 700;
-      cursor: pointer; font-family: inherit; -webkit-appearance: none;
+      cursor: pointer; font-family: inherit; -webkit-appearance: none; touch-action: manipulation;
     }
     .btn-ok:active { opacity: 0.8; }
-
     .clearfix:after { content: ''; display: table; clear: both; }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-lbl">Alcoolémie actuelle</div>
   <div class="bac-num green" id="bac-num">0.00</div>
@@ -208,8 +190,6 @@
 </div>
 
 <div class="content">
-
-  <!-- Drive -->
   <div class="card">
     <div class="card-lbl">Conduite autorisée</div>
     <div class="drive-row">
@@ -222,10 +202,9 @@
     </div>
   </div>
 
-  <!-- Profile -->
   <div class="card">
     <div class="card-lbl">Votre profil</div>
-    <div class="profile-row clearfix">
+    <div class="profile-row">
       <div class="pcell">
         <label>Poids (kg)</label>
         <input class="inp-num" type="number" id="inp-weight" value="70" min="40" max="200" onchange="onWeightChange(this.value)">
@@ -240,30 +219,26 @@
     </div>
   </div>
 
-  <!-- Add drink -->
-  <button class="btn-add" onclick="openModal()">＋  Ajouter un verre</button>
-
-  <!-- Drinks list -->
   <div class="card">
     <div class="card-lbl">Verres du jour</div>
     <div id="drinks-list"></div>
   </div>
 
-  <!-- Chart -->
   <div class="card">
     <div class="card-lbl">Évolution de l'alcoolémie</div>
     <div class="chart-wrap">
-      <div class="no-chart" id="no-chart">
-        <div class="no-chart-cell">Ajoutez un verre pour voir le graphique</div>
-      </div>
+      <div class="no-chart" id="no-chart"><div class="no-chart-cell">Ajoutez un verre pour voir le graphique</div></div>
       <canvas id="bac-canvas" style="display:none"></canvas>
     </div>
+    <div class="chart-hint" id="chart-hint" style="display:none">← Glisser pour naviguer dans le temps →</div>
   </div>
 
   <button class="btn-clear" onclick="clearAll()">🗑  Effacer tous les verres</button>
   <div class="footer" id="footer"></div>
-
 </div>
+
+<!-- FAB -->
+<button class="fab" onclick="openModal()">＋  Ajouter un verre</button>
 
 <!-- MODAL -->
 <div id="modal-overlay" onclick="overlayClick(event)">
@@ -274,18 +249,21 @@
     <div class="section-lbl">Type de boisson</div>
     <div class="d-grid clearfix" id="drink-grid"></div>
 
-    <div id="cust-section" style="display:none">
-      <div class="section-lbl">Personnalisé</div>
-      <div class="cust-row clearfix">
-        <div class="cust-col">
-          <label>Volume (mL)</label>
-          <input class="inp-cust" type="number" id="inp-vol" value="250" min="10" max="2000" oninput="refreshPreview()">
-        </div>
-        <div class="cust-col">
-          <label>Degré (°)</label>
-          <input class="inp-cust" type="number" id="inp-deg" value="5"   min="0.5" max="95" step="0.1" oninput="refreshPreview()">
+    <div class="section-lbl">Degré d'alcool</div>
+    <div class="deg-row">
+      <div class="deg-lbl-cell"><span class="deg-lbl" id="deg-vol-lbl">25cl</span></div>
+      <div class="deg-ctrl-cell">
+        <div class="deg-ctrl">
+          <button type="button" class="deg-btn" onclick="adjDeg(-0.5)">−</button>
+          <span class="deg-num"><span id="deg-val">5</span><span class="deg-unit">°</span></span>
+          <button type="button" class="deg-btn" onclick="adjDeg(0.5)">+</button>
         </div>
       </div>
+    </div>
+
+    <div class="vol-row" id="vol-row" style="display:none">
+      <label>Volume (mL)</label>
+      <input class="inp-cust" type="number" id="inp-vol" value="250" min="10" max="2000" oninput="refreshPreview()">
     </div>
 
     <div class="preview-box" id="preview-box">≈ 10,0 g d'alcool pur</div>
@@ -301,50 +279,50 @@
 </div>
 
 <script>
-/* ── CONFIG ── */
 var LEGAL = 0.5, YOUNG = 0.2, ELIM = 0.15;
+var CHART_WIN = 8 * 3600000;
 
 var DRINKS = [
-  { id:'b25',   e:'🍺', n:'Bière 25cl',     s:'5° · 10g',    g:10.0 },
-  { id:'b50',   e:'🍺', n:'Bière 50cl',     s:'5° · 20g',    g:20.0 },
-  { id:'vin',   e:'🍷', n:'Vin 12cl',       s:'12° · 11,5g', g:11.5 },
-  { id:'champ', e:'🥂', n:'Champagne 12cl', s:'12° · 11,5g', g:11.5 },
-  { id:'aper',  e:'🍸', n:'Apéritif 6cl',   s:'18° · 8,6g',  g:8.6  },
-  { id:'whis',  e:'🥃', n:'Whisky 4cl',     s:'40° · 12,8g', g:12.8 },
-  { id:'cock',  e:'🍹', n:'Cocktail 12cl',  s:'10° · 9,6g',  g:9.6  },
-  { id:'cust',  e:'🫗', n:'Personnalisé',   s:'Saisie libre', g:0    }
+  { id:'b25',   e:'🍺', n:'Bière 25cl',     s:'25cl',  vol:250, deg:5  },
+  { id:'b50',   e:'🍺', n:'Bière 50cl',     s:'50cl',  vol:500, deg:5  },
+  { id:'vin',   e:'🍷', n:'Vin 12cl',       s:'12cl',  vol:120, deg:12 },
+  { id:'champ', e:'🥂', n:'Champagne 12cl', s:'12cl',  vol:120, deg:12 },
+  { id:'aper',  e:'🍸', n:'Apéritif 6cl',   s:'6cl',   vol:60,  deg:18 },
+  { id:'whis',  e:'🥃', n:'Whisky 4cl',     s:'4cl',   vol:40,  deg:40 },
+  { id:'cock',  e:'🍹', n:'Cocktail 12cl',  s:'12cl',  vol:120, deg:10 },
+  { id:'cust',  e:'🫗', n:'Personnalisé',   s:'libre', vol:250, deg:5  }
 ];
 
 var FOODS = [
-  { id:'empty',   e:'⚡',  n:'À jeun',  f:1.00, h:0.50 },
-  { id:'snack',   e:'🥜',  n:'Apéro',   f:0.92, h:0.75 },
-  { id:'meal',    e:'🍽',  n:'Repas',   f:0.75, h:1.50 },
-  { id:'dessert', e:'🍮',  n:'Dessert', f:0.70, h:1.75 },
-  { id:'gouter',  e:'🥐',  n:'Goûter',  f:0.85, h:1.00 }
+  { id:'empty',   e:'⚡', n:'À jeun',  f:1.00, h:0.50 },
+  { id:'snack',   e:'🥜', n:'Apéro',   f:0.92, h:0.75 },
+  { id:'meal',    e:'🍽', n:'Repas',   f:0.75, h:1.50 },
+  { id:'dessert', e:'🍮', n:'Dessert', f:0.70, h:1.75 },
+  { id:'gouter',  e:'🥐', n:'Goûter',  f:0.85, h:1.00 }
 ];
 
-/* ── STATE ── */
-var ST = { weight: 70, gender: 'male', drinks: [] };
-var SEL_DRINK = 'b25';
-var SEL_FOOD  = 'empty';
+var ST = { weight:70, gender:'male', drinks:[], customDegs:{} };
+var SEL_DRINK = 'b25', SEL_FOOD = 'empty', SEL_DEG = 5.0;
+var lastPts = [];
+var chartPanMs = 0, chartTouchX = null, chartTouchPan = null;
 
-/* ── UTILS ── */
-function pad(n) { return n < 10 ? '0' + n : '' + n; }
-function fmtTs(ts) { var d = new Date(ts); return pad(d.getHours()) + 'h' + pad(d.getMinutes()); }
+function pad(n) { return n < 10 ? '0'+n : ''+n; }
+function fmtTs(ts) { var d=new Date(ts); return pad(d.getHours())+'h'+pad(d.getMinutes()); }
 function getDrink(id) { for (var i=0;i<DRINKS.length;i++) if (DRINKS[i].id===id) return DRINKS[i]; }
 function getFood(id)  { for (var i=0;i<FOODS.length;i++)  if (FOODS[i].id===id)  return FOODS[i]; }
 
-function rawGrams(did, vol, deg) {
-  if (did === 'cust') return Math.round(vol * (deg/100) * 0.8 * 10) / 10;
-  return getDrink(did).g;
+function rawGrams(did, deg, vol) {
+  var d = getDrink(did);
+  var v = (did === 'cust') ? (vol || 250) : d.vol;
+  return Math.round(v * (deg/100) * 0.8 * 10) / 10;
 }
 
-/* ── PERSISTENCE ── */
 function loadST() {
   try {
     var s = JSON.parse(localStorage.getItem('bac4') || '{}');
     if (s.weight) ST.weight = +s.weight;
     if (s.gender) ST.gender = s.gender;
+    if (s.customDegs) ST.customDegs = s.customDegs;
     var cut = Date.now() - 86400000;
     ST.drinks = (s.drinks || []).filter(function(d){ return d.ts >= cut; });
   } catch(e) {}
@@ -353,26 +331,21 @@ function saveST() {
   try { localStorage.setItem('bac4', JSON.stringify(ST)); } catch(e) {}
 }
 
-/* ── BAC SIMULATION ── */
 function buildCurve() {
   if (!ST.drinks.length) return [];
   var r = ST.gender === 'male' ? 0.7 : 0.6;
   var w = ST.weight;
-  var elimGPH = ELIM * w * r;
   var sorted = ST.drinks.slice().sort(function(a,b){ return a.ts-b.ts; });
-  var t0 = sorted[0].ts;
-  var STEP = 300000; /* 5 min */
+  var t0 = sorted[0].ts, STEP = 300000;
   var blood = 0, pts = [];
   for (var i=0; i<=288; i++) {
-    var ts = t0 + i*STEP;
-    var sh = STEP/3600000;
+    var ts = t0 + i*STEP, sh = STEP/3600000;
     for (var j=0; j<sorted.length; j++) {
       var d = sorted[j];
-      if (ts >= d.ts && ts < d.ts + d.am) {
-        blood += (d.eg / (d.am/3600000)) * sh;
-      }
+      if (ts >= d.ts && ts < d.ts + d.am) blood += (d.eg/(d.am/3600000))*sh;
     }
-    blood = blood > elimGPH*sh ? blood - elimGPH*sh : 0;
+    var elim = ELIM * w * r * sh;
+    blood = blood > elim ? blood - elim : 0;
     var bac = parseFloat((blood/(w*r)).toFixed(4));
     pts.push({ ts:ts, bac:bac });
     if (bac < 0.001 && i > 12) break;
@@ -398,54 +371,40 @@ function driveTs(pts) {
   return null;
 }
 
-/* ── RENDER BAC ── */
 function renderBAC(bac) {
   var vEl = document.getElementById('bac-num');
   var sEl = document.getElementById('bac-badge');
   vEl.innerHTML = bac.toFixed(2);
   if (bac >= LEGAL) {
-    vEl.className = 'bac-num red';
-    sEl.innerHTML = '🚫 Ne pas conduire';
-    sEl.className = 'bac-badge danger';
+    vEl.className = 'bac-num red'; sEl.innerHTML = '🚫 Ne pas conduire'; sEl.className = 'bac-badge danger';
   } else if (bac >= YOUNG) {
-    vEl.className = 'bac-num amber';
-    sEl.innerHTML = '⚠️ Limite jeune conducteur';
-    sEl.className = 'bac-badge warn';
+    vEl.className = 'bac-num amber'; sEl.innerHTML = '⚠️ Limite jeune conducteur'; sEl.className = 'bac-badge warn';
   } else {
-    vEl.className = 'bac-num green';
-    sEl.innerHTML = '✓ Peut conduire';
-    sEl.className = 'bac-badge ok';
+    vEl.className = 'bac-num green'; sEl.innerHTML = '✓ Peut conduire'; sEl.className = 'bac-badge ok';
   }
 }
 
-/* ── RENDER DRIVE ── */
 function renderDrive(pts) {
-  var bac  = bacNow(pts);
-  var now  = Date.now();
+  var bac = bacNow(pts), now = Date.now();
   var dtEl = document.getElementById('drive-time');
   var diEl = document.getElementById('drive-icon');
   var dsEl = document.getElementById('drive-sub');
   if (bac < LEGAL) {
-    diEl.innerHTML = '🟢'; dtEl.className = 'drive-time green';
-    dtEl.innerHTML = 'Maintenant ✓';
-    dsEl.innerHTML = 'Limite jeune conducteur : 0,2 g/L';
-    return;
+    diEl.innerHTML='🟢'; dtEl.className='drive-time green';
+    dtEl.innerHTML='Maintenant ✓'; dsEl.innerHTML='Limite jeune conducteur : 0,2 g/L'; return;
   }
   var ts = driveTs(pts);
-  diEl.innerHTML = '🔴'; dtEl.className = 'drive-time red';
-  if (!ts) { dtEl.innerHTML = '> 24 h'; dsEl.innerHTML = "Trop d'alcool"; return; }
-  var mins = Math.ceil((ts-now)/60000);
-  var h = Math.floor(mins/60), m = mins%60;
+  diEl.innerHTML='🔴'; dtEl.className='drive-time red';
+  if (!ts) { dtEl.innerHTML='> 24 h'; dsEl.innerHTML="Trop d'alcool"; return; }
+  var mins = Math.ceil((ts-now)/60000), h=Math.floor(mins/60), m=mins%60;
   dtEl.innerHTML = fmtTs(ts);
   dsEl.innerHTML = h>0 ? 'Dans '+h+'h'+(m?m+'min':'')+' · Limite 0,5 g/L' : 'Dans '+m+' min · Limite 0,5 g/L';
 }
 
-/* ── RENDER LIST ── */
 function renderList() {
   var el = document.getElementById('drinks-list');
   if (!ST.drinks.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">🫗</div><div>Aucun verre ajouté</div></div>';
-    return;
+    el.innerHTML = '<div class="empty"><div class="empty-icon">🫗</div><div>Aucun verre ajouté</div></div>'; return;
   }
   var sorted = ST.drinks.slice().sort(function(a,b){ return a.ts-b.ts; });
   var html = '';
@@ -456,23 +415,38 @@ function renderList() {
       '<div class="d-info"><div class="d-name">'+d.nm+'</div>'+
       '<div class="d-meta">'+fmtTs(d.ts)+' · '+getFood(d.fi).n+' · '+d.rg+'g</div></div>'+
       '<div class="d-right"><span class="d-g">+'+d.rg+'g</span>'+
-      '<button class="btn-del" onclick="delDrink(\''+d.id+'\')">×</button></div>'+
-      '</div>';
+      '<button class="btn-del" type="button" data-id="'+d.id+'">×</button></div></div>';
   }
   el.innerHTML = html;
+  var btns = el.getElementsByClassName('btn-del');
+  for (var i=0; i<btns.length; i++) {
+    btns[i].onclick = (function(id){ return function(){ delDrink(id); }; })(btns[i].getAttribute('data-id'));
+  }
 }
 
-/* ── CANVAS CHART ── */
 function drawChart(pts) {
   var canvas  = document.getElementById('bac-canvas');
   var noChart = document.getElementById('no-chart');
-  if (!pts.length) {
-    canvas.style.display = 'none';
-    noChart.style.display = 'table';
-    return;
+  var hint    = document.getElementById('chart-hint');
+  if (!pts || !pts.length) {
+    canvas.style.display='none'; noChart.style.display='table'; hint.style.display='none'; return;
   }
-  canvas.style.display = 'block';
-  noChart.style.display = 'none';
+  canvas.style.display='block'; noChart.style.display='none';
+
+  var now = Date.now();
+  var dataStart = pts[0].ts, dataEnd = pts[pts.length-1].ts;
+  var dataSpan = dataEnd - dataStart;
+  var viewStart, viewEnd;
+
+  if (dataSpan <= CHART_WIN) {
+    viewStart = dataStart - 1800000; viewEnd = dataEnd + 1800000; hint.style.display='none';
+  } else {
+    var ctr = now + chartPanMs;
+    viewStart = ctr - CHART_WIN/2; viewEnd = ctr + CHART_WIN/2;
+    if (viewStart < dataStart - 1800000) { viewStart = dataStart-1800000; viewEnd = viewStart+CHART_WIN; }
+    if (viewEnd   > dataEnd   + 1800000) { viewEnd = dataEnd+1800000; viewStart = viewEnd-CHART_WIN; }
+    hint.style.display = 'block';
+  }
 
   var wrap = canvas.parentElement;
   var CW = wrap.clientWidth || 300, CH = 220;
@@ -481,37 +455,41 @@ function drawChart(pts) {
   canvas.style.width = CW+'px'; canvas.style.height = CH+'px';
   var ctx = canvas.getContext('2d');
   ctx.scale(DPR, DPR);
-  var W=CW, H=CH, ml=42, mr=10, mt=22, mb=30, pw=W-ml-mr, ph=H-mt-mb;
-  var now = Date.now();
+  var ml=42, mr=10, mt=22, mb=32, pw=CW-ml-mr, ph=CH-mt-mb;
 
-  /* sample */
+  /* collect visible points + one on each side for clipping */
   var spts = [];
-  for (var i=0; i<pts.length; i+=3) spts.push(pts[i]);
-  if (spts[spts.length-1] !== pts[pts.length-1]) spts.push(pts[pts.length-1]);
+  for (var i=0; i<pts.length; i++) {
+    if (pts[i].ts >= viewStart && pts[i].ts <= viewEnd) spts.push(pts[i]);
+  }
+  for (var i=pts.length-1; i>=0; i--) { if (pts[i].ts < viewStart) { spts.unshift(pts[i]); break; } }
+  for (var i=0; i<pts.length; i++)    { if (pts[i].ts > viewEnd)   { spts.push(pts[i]); break; } }
+  var step = Math.max(1, Math.floor(spts.length/96));
+  var sspts = [];
+  for (var i=0; i<spts.length; i+=step) sspts.push(spts[i]);
+  if (sspts.length && sspts[sspts.length-1] !== spts[spts.length-1]) sspts.push(spts[spts.length-1]);
+  spts = sspts;
+  if (spts.length < 2) return;
 
-  var minTs=spts[0].ts, maxTs=spts[spts.length-1].ts;
-  var maxBac=0;
-  for (var i=0; i<spts.length; i++) if (spts[i].bac>maxBac) maxBac=spts[i].bac;
+  var maxBac = 0;
+  for (var i=0; i<spts.length; i++) if (spts[i].bac > maxBac) maxBac = spts[i].bac;
   if (maxBac < 0.55) maxBac = 0.55;
   var yMax = Math.ceil(maxBac/0.2)*0.2 + 0.1;
 
-  function xp(ts)  { return ml + (ts-minTs)/(maxTs-minTs)*pw; }
+  function xp(ts)  { return ml + (ts-viewStart)/(viewEnd-viewStart)*pw; }
   function yp(bac) { return mt + ph*(1-bac/yMax); }
 
-  ctx.clearRect(0,0,W,H);
+  ctx.clearRect(0,0,CW,CH);
   ctx.fillStyle='#1a1a24'; ctx.fillRect(ml,mt,pw,ph);
 
-  /* grid + Y labels */
   ctx.font='10px -apple-system,sans-serif'; ctx.textAlign='right';
   for (var v=0; v<=yMax+0.01; v+=0.2) {
-    var ypv=yp(v);
-    if (ypv<mt-1||ypv>mt+ph+1) continue;
+    var ypv=yp(v); if (ypv<mt-1||ypv>mt+ph+1) continue;
     ctx.strokeStyle='#2a2a3a'; ctx.lineWidth=1; ctx.setLineDash([]);
     ctx.beginPath(); ctx.moveTo(ml,ypv); ctx.lineTo(ml+pw,ypv); ctx.stroke();
     ctx.fillStyle='#888899'; ctx.fillText(v.toFixed(1), ml-4, ypv+3);
   }
 
-  /* reference lines */
   function hRef(val, col, lbl) {
     var ypv=yp(val); if (ypv<mt||ypv>mt+ph) return;
     ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
@@ -523,15 +501,15 @@ function drawChart(pts) {
   hRef(LEGAL,'rgba(244,67,54,0.9)','0,5 g/L');
   hRef(YOUNG,'rgba(255,193,7,0.85)','0,2 g/L');
 
-  /* now line */
-  var nx=Math.min(Math.max(xp(now),ml),ml+pw);
-  ctx.save(); ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
-  ctx.beginPath(); ctx.moveTo(nx,mt); ctx.lineTo(nx,mt+ph); ctx.stroke();
-  ctx.setLineDash([]); ctx.fillStyle='rgba(255,255,255,0.35)';
-  ctx.font='bold 10px -apple-system,sans-serif'; ctx.textAlign='center';
-  ctx.fillText('Maintenant',nx,mt-5); ctx.restore();
+  var nx = xp(now);
+  if (nx >= ml && nx <= ml+pw) {
+    ctx.save(); ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(nx,mt); ctx.lineTo(nx,mt+ph); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle='rgba(255,255,255,0.35)';
+    ctx.font='bold 10px -apple-system,sans-serif'; ctx.textAlign='center';
+    ctx.fillText('Maintenant',nx,mt-5); ctx.restore();
+  }
 
-  /* split */
   var past=[], future=[];
   for (var i=0; i<spts.length; i++) { (spts[i].ts<=now?past:future).push(spts[i]); }
   if (past.length && future.length) future.unshift(past[past.length-1]);
@@ -552,37 +530,63 @@ function drawChart(pts) {
     ctx.setLineDash([]);
   }
 
-  /* X labels */
+  /* X hour labels */
   ctx.fillStyle='#888899'; ctx.font='10px -apple-system,sans-serif'; ctx.textAlign='center';
-  var spanH=(maxTs-minTs)/3600000, hStep=spanH<=6?1:spanH<=12?2:3;
-  var d0=new Date(minTs), startH=d0.getHours()+1;
-  for (var h=startH; h<=startH+26; h+=hStep) {
-    var dd=new Date(minTs); dd.setHours(h%24,0,0,0);
-    if (h>=24) dd.setDate(dd.getDate()+Math.floor(h/24));
-    if (dd.getTime()>maxTs+60000) break;
-    var txp=xp(dd.getTime());
-    if (txp<ml+8||txp>ml+pw-4) continue;
-    ctx.fillText(pad(h%24)+'h', txp, mt+ph+16);
-    ctx.strokeStyle='#2a2a3a'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(txp,mt+ph); ctx.lineTo(txp,mt+ph+4); ctx.stroke();
+  var spanH=(viewEnd-viewStart)/3600000, hStep=spanH<=6?1:spanH<=12?2:3;
+  var tl = new Date(viewStart); tl.setMinutes(0,0,0);
+  while (tl.getTime() <= viewEnd) {
+    var txp = xp(tl.getTime());
+    if (tl.getTime() >= viewStart && txp >= ml+8 && txp <= ml+pw-4) {
+      ctx.fillText(pad(tl.getHours())+'h', txp, mt+ph+16);
+      ctx.strokeStyle='#2a2a3a'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(txp,mt+ph); ctx.lineTo(txp,mt+ph+4); ctx.stroke();
+    }
+    tl.setTime(tl.getTime() + hStep*3600000);
   }
   ctx.strokeStyle='#2a2a3a'; ctx.lineWidth=1; ctx.setLineDash([]);
   ctx.strokeRect(ml,mt,pw,ph);
+
+  /* pan scrollbar */
+  if (dataSpan > CHART_WIN) {
+    var totalSpan = dataSpan + 3600000;
+    var p1 = Math.max(0, Math.min(1, (viewStart-(dataStart-1800000))/totalSpan));
+    var p2 = Math.max(0, Math.min(1, (viewEnd  -(dataStart-1800000))/totalSpan));
+    var sy = mt+ph+26;
+    ctx.fillStyle='#2a2a3a'; ctx.fillRect(ml, sy, pw, 3);
+    ctx.fillStyle='#7c6fe0'; ctx.fillRect(ml+pw*p1, sy, pw*(p2-p1), 3);
+  }
 }
 
-/* ── MAIN UPDATE ── */
+function initChartTouch() {
+  var canvas = document.getElementById('bac-canvas');
+  canvas.addEventListener('touchstart', function(e) {
+    if (e.touches.length !== 1) return;
+    chartTouchX = e.touches[0].clientX;
+    chartTouchPan = chartPanMs;
+  }, {passive: true});
+  canvas.addEventListener('touchmove', function(e) {
+    if (chartTouchX === null || e.touches.length !== 1) return;
+    e.preventDefault();
+    var dx = e.touches[0].clientX - chartTouchX;
+    var pxW = canvas.clientWidth - 52;
+    if (pxW <= 0) return;
+    chartPanMs = chartTouchPan - dx * (CHART_WIN / pxW);
+    drawChart(lastPts);
+  }, {passive: false});
+  canvas.addEventListener('touchend', function() { chartTouchX = null; });
+}
+
 function update() {
-  var pts = buildCurve();
-  renderBAC(bacNow(pts));
-  renderDrive(pts);
+  lastPts = buildCurve();
+  renderBAC(bacNow(lastPts));
+  renderDrive(lastPts);
   renderList();
-  drawChart(pts);
+  drawChart(lastPts);
   document.getElementById('footer').innerHTML =
     'Mise à jour : ' + new Date().toLocaleTimeString('fr-FR') +
     ' &nbsp;·&nbsp; Formule Widmark &nbsp;·&nbsp; Élimination 0,15 g/L/h';
 }
 
-/* ── PROFILE HANDLERS ── */
 function onWeightChange(v) {
   v = parseFloat(v);
   if (v>=40 && v<=200) { ST.weight=v; saveST(); update(); }
@@ -593,8 +597,6 @@ function setGender(g) {
   document.getElementById('btn-female').className = g==='female' ? 'gbtn on' : 'gbtn';
   saveST(); update();
 }
-
-/* ── DRINK ACTIONS ── */
 function delDrink(id) {
   ST.drinks = ST.drinks.filter(function(d){ return d.id!==id; });
   saveST(); update();
@@ -603,48 +605,47 @@ function clearAll() {
   if (confirm('Effacer tous les verres ?')) { ST.drinks=[]; saveST(); update(); }
 }
 
-/* ── MODAL ── */
 function openModal() {
   var now = new Date();
   document.getElementById('inp-time').value = pad(now.getHours())+':'+pad(now.getMinutes());
-  document.getElementById('modal-overlay').className = 'show';
-  renderDGrid(); renderFGrid(); refreshPreview();
+  var d = getDrink(SEL_DRINK);
+  SEL_DEG = ST.customDegs[SEL_DRINK] !== undefined ? ST.customDegs[SEL_DRINK] : d.deg;
+  document.getElementById('vol-row').style.display    = SEL_DRINK==='cust' ? 'block' : 'none';
+  document.getElementById('deg-vol-lbl').textContent  = SEL_DRINK==='cust' ? 'Personnalisé' : d.vol+'mL';
+  updateDegUI(); renderDGrid(); renderFGrid(); refreshPreview();
+  var ov = document.getElementById('modal-overlay');
+  ov.style.display = 'block';
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ ov.className='show'; }); });
 }
 function closeModal() {
-  document.getElementById('modal-overlay').className = '';
+  var ov = document.getElementById('modal-overlay');
+  ov.className = '';
+  setTimeout(function(){ ov.style.display='none'; }, 360);
 }
 function overlayClick(e) {
   if (e.target === document.getElementById('modal-overlay')) closeModal();
 }
 
 function renderDGrid() {
-  var html='';
+  var html='', grid=document.getElementById('drink-grid');
   for (var i=0;i<DRINKS.length;i++) {
-    var d=DRINKS[i];
-    var sel=SEL_DRINK===d.id?' on':'';
+    var d=DRINKS[i], sel=SEL_DRINK===d.id?' on':'';
     html+='<button type="button" class="dchoice'+sel+'" data-id="'+d.id+'">';
-    html+='<div class="dc-em">'+d.e+'</div>';
-    html+='<div class="dc-nm">'+d.n+'</div>';
-    html+='<div class="dc-sb">'+d.s+'</div></button>';
+    html+='<div class="dc-em">'+d.e+'</div><div class="dc-nm">'+d.n+'</div><div class="dc-sb">'+d.s+'</div></button>';
   }
-  var grid=document.getElementById('drink-grid');
   grid.innerHTML=html;
-  document.getElementById('cust-section').style.display=SEL_DRINK==='cust'?'block':'none';
   var btns=grid.getElementsByTagName('button');
   for (var i=0;i<btns.length;i++) {
     btns[i].onclick=(function(id){ return function(){ pickDrink(id); }; })(btns[i].getAttribute('data-id'));
   }
 }
 function renderFGrid() {
-  var html='';
+  var html='', grid=document.getElementById('food-grid');
   for (var i=0;i<FOODS.length;i++) {
-    var f=FOODS[i];
-    var sel=SEL_FOOD===f.id?' on':'';
+    var f=FOODS[i], sel=SEL_FOOD===f.id?' on':'';
     html+='<button type="button" class="fchoice'+sel+'" data-id="'+f.id+'">';
-    html+='<div class="fc-em">'+f.e+'</div>';
-    html+='<div class="fc-nm">'+f.n+'</div></button>';
+    html+='<div class="fc-em">'+f.e+'</div><div class="fc-nm">'+f.n+'</div></button>';
   }
-  var grid=document.getElementById('food-grid');
   grid.innerHTML=html;
   var btns=grid.getElementsByTagName('button');
   for (var i=0;i<btns.length;i++) {
@@ -652,45 +653,60 @@ function renderFGrid() {
   }
 }
 
-function pickDrink(id) { SEL_DRINK=id; renderDGrid(); refreshPreview(); }
-function pickFood(id)  { SEL_FOOD=id;  renderFGrid(); refreshPreview(); }
+function pickDrink(id) {
+  SEL_DRINK=id;
+  var d=getDrink(id);
+  SEL_DEG = ST.customDegs[id] !== undefined ? ST.customDegs[id] : d.deg;
+  document.getElementById('vol-row').style.display   = id==='cust' ? 'block' : 'none';
+  document.getElementById('deg-vol-lbl').textContent = id==='cust' ? 'Personnalisé' : d.vol+'mL';
+  updateDegUI(); renderDGrid(); refreshPreview();
+}
+function pickFood(id) { SEL_FOOD=id; renderFGrid(); refreshPreview(); }
 
+function updateDegUI() {
+  document.getElementById('deg-val').textContent =
+    SEL_DEG % 1 === 0 ? SEL_DEG.toFixed(0) : SEL_DEG.toFixed(1);
+}
+function adjDeg(delta) {
+  SEL_DEG = Math.round((SEL_DEG+delta)*10)/10;
+  if (SEL_DEG < 0.5) SEL_DEG = 0.5;
+  if (SEL_DEG > 95)  SEL_DEG = 95;
+  updateDegUI(); refreshPreview();
+}
 function refreshPreview() {
-  var vol=parseFloat(document.getElementById('inp-vol').value)||250;
-  var deg=parseFloat(document.getElementById('inp-deg').value)||5;
-  var rg=rawGrams(SEL_DRINK,vol,deg);
-  var fc=getFood(SEL_FOOD);
-  document.getElementById('preview-box').innerHTML=
+  var vol = parseFloat(document.getElementById('inp-vol').value) || 250;
+  var rg = rawGrams(SEL_DRINK, SEL_DEG, vol);
+  var fc = getFood(SEL_FOOD);
+  document.getElementById('preview-box').innerHTML =
     '≈ '+rg.toFixed(1)+' g alcool pur &nbsp;·&nbsp; absorbé : '+(rg*fc.f).toFixed(1)+' g ('+fc.n+')';
 }
 
 function confirmDrink() {
-  var tv=document.getElementById('inp-time').value;
-  if (!tv) { alert('Veuillez indiquer l\'heure.'); return; }
-  var parts=tv.split(':');
-  var ts=new Date(); ts.setHours(parseInt(parts[0],10),parseInt(parts[1],10),0,0);
-  var vol=parseFloat(document.getElementById('inp-vol').value)||250;
-  var deg=parseFloat(document.getElementById('inp-deg').value)||5;
-  var dc=getDrink(SEL_DRINK), fc=getFood(SEL_FOOD);
-  var rg=rawGrams(SEL_DRINK,vol,deg);
+  var tv = document.getElementById('inp-time').value;
+  if (!tv) { alert("Veuillez indiquer l'heure."); return; }
+  var parts = tv.split(':');
+  var ts = new Date(); ts.setHours(parseInt(parts[0],10), parseInt(parts[1],10), 0, 0);
+  var vol = parseFloat(document.getElementById('inp-vol').value) || 250;
+  var dc = getDrink(SEL_DRINK), fc = getFood(SEL_FOOD);
+  var rg = rawGrams(SEL_DRINK, SEL_DEG, vol);
+  ST.customDegs[SEL_DRINK] = SEL_DEG;
+  var nm = SEL_DRINK==='cust'
+    ? 'Perso ('+vol+'mL · '+SEL_DEG+'°)'
+    : dc.n+' ('+SEL_DEG+'°)';
   ST.drinks.push({
     id: Date.now().toString(16)+(Math.random()*65536|0).toString(16),
-    em: dc.e,
-    nm: SEL_DRINK==='cust'?'Perso ('+vol+'mL, '+deg+'°)':dc.n,
-    fi: SEL_FOOD,
-    rg: rg,
+    em: dc.e, nm: nm, fi: SEL_FOOD, rg: rg,
     eg: parseFloat((rg*fc.f).toFixed(2)),
-    am: Math.round(fc.h*3600000),
-    ts: ts.getTime()
+    am: Math.round(fc.h*3600000), ts: ts.getTime()
   });
   saveST(); closeModal(); update();
 }
 
-/* ── INIT ── */
 loadST();
 document.getElementById('inp-weight').value = ST.weight;
 document.getElementById('btn-male').className   = ST.gender==='male'   ? 'gbtn on' : 'gbtn';
 document.getElementById('btn-female').className = ST.gender==='female' ? 'gbtn on' : 'gbtn';
+initChartTouch();
 update();
 setInterval(update, 60000);
 </script>
