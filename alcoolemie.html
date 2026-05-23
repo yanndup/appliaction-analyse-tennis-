@@ -17,7 +17,6 @@
       --green: #4caf7d;
       --amber: #ffc107;
       --red: #f44336;
-      --orange: #ff7043;
       --text: #e8e8f4;
       --muted: #888899;
       --radius: 16px;
@@ -29,19 +28,20 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       min-height: 100vh;
       max-width: 500px;
       margin: 0 auto;
       padding-bottom: 88px;
     }
 
-    /* ── Header ── */
+    /* Header */
     .header {
       background: var(--surface);
       padding: 20px 20px 16px;
       text-align: center;
       border-bottom: 1px solid var(--border);
+      position: -webkit-sticky;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -58,15 +58,12 @@
       font-size: 76px;
       font-weight: 800;
       line-height: 1;
-      font-variant-numeric: tabular-nums;
+      -webkit-font-feature-settings: "tnum";
+      font-feature-settings: "tnum";
+      -webkit-transition: color 0.4s;
       transition: color 0.4s;
     }
-    .bac-unit {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 2px;
-      letter-spacing: 0.5px;
-    }
+    .bac-unit { font-size: 13px; color: var(--muted); margin-top: 2px; }
     .bac-status {
       display: inline-block;
       margin-top: 10px;
@@ -75,14 +72,14 @@
       font-size: 13px;
       font-weight: 600;
     }
-    .s-ok    { background: rgba(76,175,125,0.18); color: var(--green); }
-    .s-warn  { background: rgba(255,193,7,0.18);  color: var(--amber); }
-    .s-danger{ background: rgba(244,67,54,0.18);  color: var(--red);   }
-    .c-green { color: var(--green); }
-    .c-amber { color: var(--amber); }
-    .c-red   { color: var(--red);   }
+    .s-ok     { background: rgba(76,175,125,0.18); color: var(--green); }
+    .s-warn   { background: rgba(255,193,7,0.18);  color: var(--amber); }
+    .s-danger { background: rgba(244,67,54,0.18);  color: var(--red);   }
+    .c-green  { color: var(--green); }
+    .c-amber  { color: var(--amber); }
+    .c-red    { color: var(--red);   }
 
-    /* ── Content ── */
+    /* Content */
     .content { padding: 14px 14px 0; }
 
     .card {
@@ -101,15 +98,20 @@
       margin-bottom: 12px;
     }
 
-    /* ── Drive card ── */
-    .drive-row { display: flex; align-items: center; gap: 14px; }
-    .drive-icon { font-size: 36px; flex-shrink: 0; }
+    /* Drive card */
+    .drive-row { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; }
+    .drive-icon { font-size: 36px; -webkit-flex-shrink: 0; flex-shrink: 0; margin-right: 14px; }
     .drive-label { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
-    .drive-time  { font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .drive-time  { font-size: 26px; font-weight: 800; }
     .drive-sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-    /* ── Profile ── */
-    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    /* Profile */
+    .profile-grid {
+      display: -webkit-flex;
+      display: flex;
+      gap: 12px;
+    }
+    .pfield { -webkit-flex: 1; flex: 1; }
     .pfield label {
       display: block;
       font-size: 11px;
@@ -129,16 +131,17 @@
       outline: none;
       -webkit-appearance: none;
     }
-    .pfield input[type="number"]:focus { border-color: var(--accent); }
     .gender-toggle {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: -webkit-flex;
+      display: flex;
       background: var(--surface2);
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid var(--border);
     }
     .gender-toggle button {
+      -webkit-flex: 1;
+      flex: 1;
       padding: 11px 6px;
       border: none;
       background: transparent;
@@ -146,11 +149,10 @@
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s;
     }
     .gender-toggle button.active { background: var(--accent); color: #fff; }
 
-    /* ── Add button ── */
+    /* Add button */
     .btn-add {
       width: 100%;
       padding: 18px;
@@ -161,51 +163,63 @@
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
+      display: -webkit-flex;
       display: flex;
+      -webkit-align-items: center;
       align-items: center;
+      -webkit-justify-content: center;
       justify-content: center;
-      gap: 8px;
       margin-bottom: 12px;
-      transition: opacity 0.2s, transform 0.1s;
     }
-    .btn-add:active { opacity: 0.8; transform: scale(0.98); }
-    .btn-add-icon { font-size: 22px; font-weight: 400; line-height: 1; }
+    .btn-add:active { opacity: 0.8; }
+    .btn-add-icon { font-size: 22px; margin-right: 8px; }
 
-    /* ── Drinks list ── */
+    /* Drinks list */
     .drink-item {
+      display: -webkit-flex;
       display: flex;
+      -webkit-align-items: center;
       align-items: center;
-      gap: 12px;
       padding: 11px 0;
       border-bottom: 1px solid var(--border);
     }
     .drink-item:last-child { border-bottom: none; }
-    .di-emoji { font-size: 28px; flex-shrink: 0; }
-    .di-info  { flex: 1; min-width: 0; }
+    .di-emoji { font-size: 28px; -webkit-flex-shrink: 0; flex-shrink: 0; margin-right: 12px; }
+    .di-info  { -webkit-flex: 1; flex: 1; min-width: 0; margin-right: 8px; }
     .di-name  { font-size: 14px; font-weight: 600; }
     .di-meta  { font-size: 11px; color: var(--muted); margin-top: 2px; }
-    .di-g     { font-size: 13px; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+    .di-g     { font-size: 13px; font-weight: 700; color: var(--accent); -webkit-flex-shrink: 0; flex-shrink: 0; margin-right: 8px; }
     .btn-del  {
-      width: 30px; height: 30px; border-radius: 50%;
+      width: 32px; height: 32px; border-radius: 50%;
       background: rgba(244,67,54,0.12); color: var(--red);
       border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; flex-shrink: 0;
-      transition: background 0.2s;
+      font-size: 18px; -webkit-flex-shrink: 0; flex-shrink: 0;
+      display: -webkit-flex; display: flex;
+      -webkit-align-items: center; align-items: center;
+      -webkit-justify-content: center; justify-content: center;
     }
-    .btn-del:active { background: rgba(244,67,54,0.28); }
+    .btn-del:active { background: rgba(244,67,54,0.3); }
     .empty-state { text-align: center; padding: 24px; color: var(--muted); }
-    .empty-state .ei { font-size: 38px; margin-bottom: 8px; }
+    .empty-icon  { font-size: 38px; margin-bottom: 8px; }
 
-    /* ── Chart ── */
+    /* Chart */
     .chart-wrap { position: relative; height: 230px; }
     .no-graph {
       height: 230px;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted); font-size: 13px;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      padding: 0 16px;
     }
+    #bac-chart { display: block; }
 
-    /* ── Clear button ── */
+    /* Clear button */
     .btn-clear {
       width: 100%;
       padding: 12px;
@@ -217,7 +231,6 @@
       font-weight: 600;
       cursor: pointer;
       margin-bottom: 12px;
-      transition: background 0.2s;
     }
     .btn-clear:active { background: rgba(244,67,54,0.22); }
 
@@ -229,25 +242,30 @@
       line-height: 1.5;
     }
 
-    /* ── Modal ── */
+    /* Modal */
     .modal-overlay {
-      position: fixed; top: 0; right: 0; bottom: 0; left: 0;
-      background: rgba(0,0,0,0.72);
+      position: fixed;
+      top: 0; right: 0; bottom: 0; left: 0;
+      background: rgba(0,0,0,0.75);
       z-index: 200;
-      display: flex; align-items: flex-end;
-      -webkit-backdrop-filter: blur(4px);
-      backdrop-filter: blur(4px);
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: flex-end;
+      align-items: flex-end;
+      -webkit-backdrop-filter: blur(3px);
+      backdrop-filter: blur(3px);
     }
     .modal-overlay.hidden { display: none; }
     .modal {
       background: var(--surface);
       border-radius: 24px 24px 0 0;
-      padding: 10px 16px 44px;
+      padding: 10px 16px 48px;
       width: 100%;
       max-width: 500px;
       margin: 0 auto;
-      max-height: 92vh;
+      max-height: 90vh;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       border-top: 1px solid var(--border);
     }
     .modal-handle {
@@ -264,21 +282,23 @@
       color: var(--muted); margin-bottom: 8px;
     }
 
-    /* Drink choice grid */
+    /* Drink choices */
     .drink-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-wrap: wrap;
+      flex-wrap: wrap;
+      margin: 0 -4px 16px;
     }
     .drink-choice {
+      width: calc(50% - 8px);
+      margin: 4px;
       background: var(--surface2);
       border: 2px solid var(--border);
       border-radius: 12px;
       padding: 11px 8px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.15s;
     }
     .drink-choice.sel { border-color: var(--accent); background: rgba(124,111,224,0.14); }
     .dc-emoji { font-size: 22px; margin-bottom: 3px; }
@@ -287,9 +307,12 @@
 
     /* Custom inputs */
     .custom-row {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 8px; margin-bottom: 16px;
+      display: -webkit-flex;
+      display: flex;
+      margin-bottom: 16px;
     }
+    .igroup { -webkit-flex: 1; flex: 1; }
+    .igroup:first-child { margin-right: 8px; }
     .igroup label {
       display: block; font-size: 11px; color: var(--muted);
       margin-bottom: 4px; font-weight: 600;
@@ -302,25 +325,27 @@
       color: var(--text);
       font-size: 18px; font-weight: 600;
       padding: 10px 12px;
-      outline: none; -webkit-appearance: none;
+      outline: none;
+      -webkit-appearance: none;
     }
-    .igroup input:focus { border-color: var(--accent); }
 
-    /* Food grid */
+    /* Food choices */
     .food-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-wrap: wrap;
+      flex-wrap: wrap;
+      margin: 0 -3px 16px;
     }
     .food-choice {
+      width: calc(33.33% - 6px);
+      margin: 3px;
       background: var(--surface2);
       border: 2px solid var(--border);
       border-radius: 12px;
       padding: 10px 6px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.15s;
     }
     .food-choice.sel { border-color: var(--amber); background: rgba(255,193,7,0.10); }
     .fc-emoji { font-size: 20px; margin-bottom: 3px; }
@@ -336,11 +361,22 @@
       font-size: 22px; font-weight: 700;
       padding: 12px;
       outline: none;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
       text-align: center;
       -webkit-appearance: none;
     }
-    .time-inp:focus { border-color: var(--accent); }
+
+    .grams-preview {
+      text-align: center;
+      padding: 8px;
+      background: rgba(124,111,224,0.1);
+      border-radius: 10px;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
 
     .btn-confirm {
       width: 100%;
@@ -351,26 +387,13 @@
       border-radius: var(--radius);
       font-size: 16px; font-weight: 700;
       cursor: pointer;
-      transition: opacity 0.2s, transform 0.1s;
     }
-    .btn-confirm:active { opacity: 0.8; transform: scale(0.98); }
-
-    /* computed grams preview */
-    .grams-preview {
-      text-align: center;
-      padding: 8px;
-      background: rgba(124,111,224,0.1);
-      border-radius: 10px;
-      font-size: 13px;
-      color: var(--accent);
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
+    .btn-confirm:active { opacity: 0.8; }
   </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
+<!-- HEADER -->
 <div class="header">
   <div class="header-title">Alcoolémie actuelle</div>
   <div class="bac-value c-green" id="bac-value">0.00</div>
@@ -378,7 +401,6 @@
   <div class="bac-status s-ok" id="bac-status">✓ Peut conduire</div>
 </div>
 
-<!-- ── CONTENT ── -->
 <div class="content">
 
   <!-- Drive time -->
@@ -387,7 +409,7 @@
     <div class="drive-row">
       <div class="drive-icon" id="drive-icon">🟢</div>
       <div>
-        <div class="drive-label">Limite légale — 0,5 g/L (France)</div>
+        <div class="drive-label">Limite légale France — 0,5 g/L</div>
         <div class="drive-time c-green" id="drive-time">Maintenant ✓</div>
         <div class="drive-sub" id="drive-sub">Jeune conducteur : 0,2 g/L</div>
       </div>
@@ -433,14 +455,12 @@
     </div>
   </div>
 
-  <!-- Clear -->
-  <button class="btn-clear" id="btn-clear">🗑 Effacer tous les verres</button>
-
+  <button class="btn-clear" id="btn-clear">🗑  Effacer tous les verres</button>
   <div class="footer-note" id="footer-note"></div>
 
 </div>
 
-<!-- ── MODAL ── -->
+<!-- MODAL -->
 <div class="modal-overlay hidden" id="modal-overlay">
   <div class="modal" id="modal">
     <div class="modal-handle"></div>
@@ -475,560 +495,548 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-'use strict';
+(function () {
+  'use strict';
 
-/* ============================================================
-   CONFIG
-   ============================================================ */
+  /* ── CONFIG ── */
+  var LEGAL = 0.5;
+  var YOUNG = 0.2;
+  var ELIM  = 0.15; // g/L/h
 
-const LEGAL_LIMIT = 0.5;   // g/L
-const YOUNG_LIMIT = 0.2;   // g/L (< 3 ans de permis)
-const ELIM_RATE   = 0.15;  // g/L/hr (average)
+  var DRINKS = [
+    { id:'b25',   emoji:'🍺', name:'Bière 25cl',     sub:'5° · 10g',    grams:10.0 },
+    { id:'b50',   emoji:'🍺', name:'Bière 50cl',     sub:'5° · 20g',    grams:20.0 },
+    { id:'vin',   emoji:'🍷', name:'Vin 12cl',       sub:'12° · 11,5g', grams:11.5 },
+    { id:'champ', emoji:'🥂', name:'Champagne 12cl', sub:'12° · 11,5g', grams:11.5 },
+    { id:'aper',  emoji:'🍸', name:'Apéritif 6cl',   sub:'18° · 8,6g',  grams:8.6  },
+    { id:'whis',  emoji:'🥃', name:'Whisky 4cl',     sub:'40° · 12,8g', grams:12.8 },
+    { id:'cock',  emoji:'🍹', name:'Cocktail 12cl',  sub:'10° · 9,6g',  grams:9.6  },
+    { id:'cust',  emoji:'🫗', name:'Personnalisé',   sub:'Saisie libre', grams:0   },
+  ];
 
-const DRINKS = [
-  { id: 'b25',   emoji: '🍺', name: 'Bière 25cl',    sub: '5° · 10,0g',  grams: 10.0 },
-  { id: 'b50',   emoji: '🍺', name: 'Bière 50cl',    sub: '5° · 20,0g',  grams: 20.0 },
-  { id: 'vin',   emoji: '🍷', name: 'Vin 12cl',      sub: '12° · 11,5g', grams: 11.5 },
-  { id: 'champ', emoji: '🥂', name: 'Champagne 12cl', sub: '12° · 11,5g', grams: 11.5 },
-  { id: 'aper',  emoji: '🍸', name: 'Apéritif 6cl',  sub: '18° · 8,6g',  grams: 8.6  },
-  { id: 'whis',  emoji: '🥃', name: 'Whisky 4cl',    sub: '40° · 12,8g', grams: 12.8 },
-  { id: 'cock',  emoji: '🍹', name: 'Cocktail 12cl', sub: '10° · 9,6g',  grams: 9.6  },
-  { id: 'cust',  emoji: '🫗', name: 'Personnalisé',  sub: 'Saisie libre', grams: 0    },
-];
+  var FOODS = [
+    { id:'empty',   emoji:'⚡',  name:'À jeun',  factor:1.00, absH:0.50 },
+    { id:'snack',   emoji:'🥜',  name:'Apéro',   factor:0.92, absH:0.75 },
+    { id:'meal',    emoji:'🍽️', name:'Repas',   factor:0.75, absH:1.50 },
+    { id:'dessert', emoji:'🍮',  name:'Dessert', factor:0.70, absH:1.75 },
+    { id:'gouter',  emoji:'🥐',  name:'Goûter',  factor:0.85, absH:1.00 },
+  ];
 
-// factor = fraction d'alcool réellement absorbée
-// absH   = durée d'absorption (heures)
-const FOODS = [
-  { id: 'empty',   emoji: '⚡',  name: 'À jeun',    factor: 1.00, absH: 0.50 },
-  { id: 'snack',   emoji: '🥜',  name: 'Apéro',     factor: 0.92, absH: 0.75 },
-  { id: 'meal',    emoji: '🍽️', name: 'Repas',     factor: 0.75, absH: 1.50 },
-  { id: 'dessert', emoji: '🍮',  name: 'Dessert',   factor: 0.70, absH: 1.75 },
-  { id: 'gouter',  emoji: '🥐',  name: 'Goûter',    factor: 0.85, absH: 1.00 },
-];
+  /* ── STATE ── */
+  var state = { weight: 70, gender: 'male', drinks: [] };
+  var selDrink = 'b25';
+  var selFood  = 'empty';
 
-/* ============================================================
-   STATE
-   ============================================================ */
+  /* ── PERSISTENCE ── */
+  function loadState() {
+    try {
+      var raw = localStorage.getItem('bac_v3');
+      if (!raw) return;
+      var s = JSON.parse(raw);
+      state.weight = Number(s.weight) || 70;
+      state.gender = s.gender === 'female' ? 'female' : 'male';
+      var cut = Date.now() - 24 * 3600 * 1000;
+      state.drinks = (s.drinks || []).filter(function(d) { return d.ts >= cut; });
+    } catch (e) {}
+  }
 
-let state = { weight: 70, gender: 'male', drinks: [] };
-let chart = null;
-let selDrink = 'b25';
-let selFood  = 'empty';
+  function saveState() {
+    try { localStorage.setItem('bac_v3', JSON.stringify(state)); } catch(e) {}
+  }
 
-/* ============================================================
-   PERSISTENCE
-   ============================================================ */
+  /* ── HELPERS ── */
+  function getDrink(id) {
+    for (var i = 0; i < DRINKS.length; i++) if (DRINKS[i].id === id) return DRINKS[i];
+  }
+  function getFood(id) {
+    for (var i = 0; i < FOODS.length; i++) if (FOODS[i].id === id) return FOODS[i];
+  }
 
-function loadState() {
-  try {
-    const raw = localStorage.getItem('bac_app_v2');
-    if (!raw) return;
-    const s = JSON.parse(raw);
-    state.weight = Number(s.weight) || 70;
-    state.gender = s.gender === 'female' ? 'female' : 'male';
-    const cutoff = Date.now() - 24 * 3600 * 1000;
-    state.drinks = (s.drinks || []).filter(d => d.ts >= cutoff);
-  } catch (e) { /* ignore */ }
-}
+  function fmtTime(ts) {
+    var d = new Date(ts);
+    return pad(d.getHours()) + 'h' + pad(d.getMinutes());
+  }
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
-function saveState() {
-  localStorage.setItem('bac_app_v2', JSON.stringify(state));
-}
+  function computeRawGrams(drinkId, vol, deg) {
+    if (drinkId === 'cust') return Math.round(vol * (deg / 100) * 0.8 * 10) / 10;
+    return getDrink(drinkId).grams;
+  }
 
-/* ============================================================
-   BAC SIMULATION  (Widmark + numerical integration, step=5min)
-   ============================================================ */
+  function buildDrink(drinkId, foodId, ts, vol, deg) {
+    var dc  = getDrink(drinkId);
+    var fc  = getFood(foodId);
+    var raw = computeRawGrams(drinkId, vol, deg);
+    return {
+      id:      Date.now().toString(16) + Math.floor(Math.random() * 65536).toString(16),
+      drinkId: drinkId,
+      foodId:  foodId,
+      emoji:   dc.emoji,
+      name:    drinkId === 'cust' ? 'Perso (' + vol + 'mL, ' + deg + '°)' : dc.name,
+      rawG:    raw,
+      effG:    parseFloat((raw * fc.factor).toFixed(2)),
+      absMs:   Math.round(fc.absH * 3600000),
+      ts:      ts,
+    };
+  }
 
-function buildCurve() {
-  if (!state.drinks.length) return [];
+  /* ── BAC SIMULATION ── */
+  function buildCurve() {
+    if (!state.drinks.length) return [];
+    var r   = state.gender === 'male' ? 0.7 : 0.6;
+    var wkg = state.weight;
+    var elimGPH = ELIM * wkg * r;
 
-  const r   = state.gender === 'male' ? 0.7 : 0.6;
-  const wkg = state.weight;
-  const elimGPH = ELIM_RATE * wkg * r;   // grams eliminated per hour
+    var sorted = state.drinks.slice().sort(function(a,b){ return a.ts - b.ts; });
+    var t0 = sorted[0].ts;
+    var STEP = 5 * 60 * 1000;
+    var MAX  = 24 * 12;
 
-  const sorted = [...state.drinks].sort((a, b) => a.ts - b.ts);
-  const t0  = sorted[0].ts;
-  const STEP_MS   = 5 * 60 * 1000;   // 5 minutes
-  const MAX_STEPS = 24 * 12;          // 24 hours
+    var blood = 0;
+    var pts   = [];
 
-  let blood = 0;   // grams of alcohol currently in blood
-  const pts = [];
+    for (var i = 0; i <= MAX; i++) {
+      var ts    = t0 + i * STEP;
+      var stepH = STEP / 3600000;
 
-  for (let i = 0; i <= MAX_STEPS; i++) {
-    const ts   = t0 + i * STEP_MS;
-    const stepH = STEP_MS / 3600000;
-
-    // Absorption from active drinks
-    for (const d of sorted) {
-      const absEnd = d.ts + d.absMs;
-      if (ts >= d.ts && ts < absEnd) {
-        const rate = d.effG / (d.absMs / 3600000); // g/hr
-        blood += rate * stepH;
+      for (var j = 0; j < sorted.length; j++) {
+        var d = sorted[j];
+        if (ts >= d.ts && ts < d.ts + d.absMs) {
+          var rate = d.effG / (d.absMs / 3600000);
+          blood += rate * stepH;
+        }
       }
+
+      blood = Math.max(0, blood - elimGPH * stepH);
+      var bac = parseFloat((blood / (wkg * r)).toFixed(4));
+      pts.push({ ts: ts, bac: bac });
+      if (bac < 0.001 && i > 12) break;
+    }
+    return pts;
+  }
+
+  function bacAtNow(curve) {
+    if (!curve.length) return 0;
+    var now = Date.now();
+    var best = curve[0];
+    for (var i = 0; i < curve.length; i++) {
+      if (Math.abs(curve[i].ts - now) < Math.abs(best.ts - now)) best = curve[i];
+      if (curve[i].ts > now + 60000) break;
+    }
+    return best.bac;
+  }
+
+  function driveTimestamp(curve) {
+    var now = Date.now();
+    for (var i = 0; i < curve.length; i++) {
+      if (curve[i].ts >= now && curve[i].bac < LEGAL) return curve[i].ts;
+    }
+    return null;
+  }
+
+  /* ── CANVAS CHART ── */
+  function drawChart(curve) {
+    var canvas  = document.getElementById('bac-chart');
+    var noGraph = document.getElementById('no-graph');
+
+    if (!curve.length) {
+      canvas.style.display = 'none';
+      noGraph.style.display = 'flex';
+      return;
     }
 
-    // Elimination (constant rate, floor at 0)
-    blood = Math.max(0, blood - elimGPH * stepH);
+    noGraph.style.display = 'none';
+    canvas.style.display  = 'block';
 
-    const bac = parseFloat((blood / (wkg * r)).toFixed(4));
-    pts.push({ ts, bac });
+    var wrap = canvas.parentElement;
+    var CSS_W = wrap.clientWidth || 300;
+    var CSS_H = 220;
+    var DPR   = window.devicePixelRatio || 1;
 
-    if (bac < 0.001 && i > 12) break;   // curve reached 0, stop early
-  }
-  return pts;
-}
+    canvas.width  = Math.round(CSS_W * DPR);
+    canvas.height = Math.round(CSS_H * DPR);
+    canvas.style.width  = CSS_W + 'px';
+    canvas.style.height = CSS_H + 'px';
 
-function bacAtNow(curve) {
-  if (!curve.length) return 0;
-  const now = Date.now();
-  let best = curve[0];
-  for (const p of curve) {
-    if (Math.abs(p.ts - now) < Math.abs(best.ts - now)) best = p;
-    if (p.ts > now + 60000) break;
-  }
-  return best.bac;
-}
+    var ctx = canvas.getContext('2d');
+    ctx.scale(DPR, DPR);
 
-function driveTs(curve) {
-  const now = Date.now();
-  for (const p of curve) {
-    if (p.ts < now) continue;
-    if (p.bac < LEGAL_LIMIT) return p.ts;
-  }
-  return null;
-}
+    var W = CSS_W, H = CSS_H;
+    var ml = 40, mr = 12, mt = 22, mb = 30;
+    var pw = W - ml - mr;
+    var ph = H - mt - mb;
+    var now = Date.now();
 
-/* ============================================================
-   HELPERS
-   ============================================================ */
+    /* sample every 15 min */
+    var pts = [];
+    for (var i = 0; i < curve.length; i += 3) pts.push(curve[i]);
+    if (pts[pts.length-1] !== curve[curve.length-1]) pts.push(curve[curve.length-1]);
 
-function fmtTime(ts) {
-  const d = new Date(ts);
-  return String(d.getHours()).padStart(2,'0') + 'h' + String(d.getMinutes()).padStart(2,'0');
-}
+    var minTs = pts[0].ts;
+    var maxTs = pts[pts.length-1].ts;
+    var maxBac = 0;
+    for (var i = 0; i < pts.length; i++) if (pts[i].bac > maxBac) maxBac = pts[i].bac;
+    if (maxBac < 0.55) maxBac = 0.55;
+    var yMax = Math.ceil(maxBac / 0.2) * 0.2 + 0.1;
 
-function drinkCfg(id)  { return DRINKS.find(d => d.id === id); }
-function foodCfg(id)   { return FOODS.find(f => f.id === id); }
+    function xp(ts)  { return ml + (ts - minTs) / (maxTs - minTs) * pw; }
+    function yp(bac) { return mt + ph * (1 - bac / yMax); }
 
-function computeGrams(drinkId, vol, deg) {
-  if (drinkId === 'cust') return Math.round(vol * (deg / 100) * 0.8 * 10) / 10;
-  return drinkCfg(drinkId).grams;
-}
+    /* clear */
+    ctx.clearRect(0, 0, W, H);
 
-function buildDrink(drinkId, foodId, ts, vol, deg) {
-  const dc  = drinkCfg(drinkId);
-  const fc  = foodCfg(foodId);
-  const raw = computeGrams(drinkId, vol, deg);
-  return {
-    id:    Date.now().toString(36) + Math.random().toString(36).slice(2),
-    drinkId, foodId,
-    emoji: dc.emoji,
-    name:  drinkId === 'cust' ? `Perso (${vol}mL, ${deg}°)` : dc.name,
-    rawG:  raw,
-    effG:  parseFloat((raw * fc.factor).toFixed(2)),
-    absMs: Math.round(fc.absH * 3600000),
-    ts,
-  };
-}
+    /* plot background */
+    ctx.fillStyle = '#1a1a24';
+    ctx.fillRect(ml, mt, pw, ph);
 
-/* ============================================================
-   RENDER
-   ============================================================ */
+    /* horizontal grid + Y labels */
+    ctx.font = '10px system-ui, -apple-system, sans-serif';
+    ctx.textAlign = 'right';
+    var yStep = 0.2;
+    for (var v = 0; v <= yMax + 0.01; v += yStep) {
+      var ypv = yp(v);
+      if (ypv < mt - 1 || ypv > mt + ph + 1) continue;
+      ctx.strokeStyle = '#2a2a3a';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(ml, ypv);
+      ctx.lineTo(ml + pw, ypv);
+      ctx.stroke();
+      ctx.fillStyle = '#888899';
+      ctx.fillText(v.toFixed(1), ml - 4, ypv + 3);
+    }
 
-function renderDrinksList() {
-  const el = document.getElementById('drinks-list');
-  if (!state.drinks.length) {
-    el.innerHTML = `<div class="empty-state"><div class="ei">🫗</div><div>Aucun verre ajouté</div></div>`;
-    return;
-  }
-  const sorted = [...state.drinks].sort((a, b) => a.ts - b.ts);
-  el.innerHTML = sorted.map(d => `
-    <div class="drink-item">
-      <div class="di-emoji">${d.emoji}</div>
-      <div class="di-info">
-        <div class="di-name">${d.name}</div>
-        <div class="di-meta">${fmtTime(d.ts)} · ${foodCfg(d.foodId).name} · ${d.rawG}g alcool pur</div>
-      </div>
-      <div class="di-g">+${d.rawG}g</div>
-      <button class="btn-del" data-id="${d.id}">×</button>
-    </div>`).join('');
-}
-
-function renderBAC(bac) {
-  const vEl = document.getElementById('bac-value');
-  const sEl = document.getElementById('bac-status');
-  vEl.textContent = bac.toFixed(2);
-  if (bac >= LEGAL_LIMIT) {
-    vEl.className = 'bac-value c-red';
-    sEl.textContent = '🚫 Ne pas conduire';
-    sEl.className   = 'bac-status s-danger';
-  } else if (bac >= YOUNG_LIMIT) {
-    vEl.className = 'bac-value c-amber';
-    sEl.textContent = '⚠️ Limite jeune conducteur dépassée';
-    sEl.className   = 'bac-status s-warn';
-  } else {
-    vEl.className = 'bac-value c-green';
-    sEl.textContent = '✓ Peut conduire';
-    sEl.className   = 'bac-status s-ok';
-  }
-}
-
-function renderDrive(curve) {
-  const now  = Date.now();
-  const bac  = bacAtNow(curve);
-  const dtEl = document.getElementById('drive-time');
-  const diEl = document.getElementById('drive-icon');
-  const dsEl = document.getElementById('drive-sub');
-
-  if (bac < LEGAL_LIMIT) {
-    diEl.textContent = '🟢';
-    dtEl.textContent = 'Maintenant ✓';
-    dtEl.className   = 'drive-time c-green';
-    dsEl.textContent = 'Limite jeune conducteur : 0,2 g/L';
-    return;
-  }
-
-  const ts = driveTs(curve);
-  diEl.textContent = '🔴';
-  dtEl.className   = 'drive-time c-red';
-
-  if (!ts) {
-    dtEl.textContent = '> 24 h';
-    dsEl.textContent = 'Trop d\'alcool consommé';
-    return;
-  }
-
-  const mins = Math.ceil((ts - now) / 60_000);
-  const h = Math.floor(mins / 60);
-  const m = mins % 60;
-  dtEl.textContent = fmtTime(ts);
-  if (h > 0) {
-    dsEl.textContent = `Dans ${h}h${m > 0 ? m + 'min' : ''} · Limite 0,5 g/L`;
-  } else {
-    dsEl.textContent = `Dans ${m} min · Limite 0,5 g/L`;
-  }
-}
-
-/* ── Chart ── */
-const LIMIT_LINE_PLUGIN = {
-  id: 'limitLines',
-  afterDraw(ch) {
-    const { ctx, chartArea: { left, right, top, bottom }, scales: { y } } = ch;
-
-    function drawHLine(val, color, label) {
-      const yPx = y.getPixelForValue(val);
-      if (yPx < top || yPx > bottom) return;
+    /* reference lines */
+    function hRef(val, color, label) {
+      var ypv = yp(val);
+      if (ypv < mt || ypv > mt + ph) return;
       ctx.save();
       ctx.strokeStyle = color;
-      ctx.lineWidth   = 1.5;
+      ctx.lineWidth = 1.5;
       ctx.setLineDash([5, 4]);
       ctx.beginPath();
-      ctx.moveTo(left, yPx);
-      ctx.lineTo(right, yPx);
+      ctx.moveTo(ml, ypv); ctx.lineTo(ml + pw, ypv);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle  = color;
-      ctx.font       = 'bold 10px system-ui';
-      ctx.textAlign  = 'right';
-      ctx.fillText(label, right - 4, yPx - 4);
+      ctx.fillStyle = color;
+      ctx.font = 'bold 10px system-ui, -apple-system, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(label, ml + pw - 2, ypv - 3);
       ctx.restore();
     }
+    hRef(LEGAL, 'rgba(244,67,54,0.9)',  '0,5 g/L');
+    hRef(YOUNG, 'rgba(255,193,7,0.85)', '0,2 g/L');
 
-    drawHLine(LEGAL_LIMIT, 'rgba(244,67,54,0.8)',   '0,5 g/L');
-    drawHLine(YOUNG_LIMIT, 'rgba(255,193,7,0.65)',  '0,2 g/L');
+    /* "now" line */
+    var nx = Math.min(Math.max(xp(now), ml), ml + pw);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(nx, mt); ctx.lineTo(nx, mt + ph);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = 'bold 10px system-ui, -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Maintenant', nx, mt - 5);
+    ctx.restore();
 
-    // Vertical "now" line
-    const nowLabel = fmtTime(Date.now());
-    const labels   = ch.data.labels;
-    const idx      = labels.findIndex(l => l >= nowLabel);
-    if (idx >= 0 && idx < labels.length) {
-      const x = ch.scales.x;
-      const xPx = x.getPixelForTick(idx);
-      ctx.save();
-      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
-      ctx.lineWidth   = 1;
-      ctx.setLineDash([3, 3]);
+    /* split points */
+    var past = [], future = [];
+    for (var i = 0; i < pts.length; i++) {
+      if (pts[i].ts <= now) past.push(pts[i]);
+      else future.push(pts[i]);
+    }
+    /* connect past to future */
+    if (past.length && future.length) future.unshift(past[past.length - 1]);
+
+    /* filled area under past */
+    if (past.length > 1) {
       ctx.beginPath();
-      ctx.moveTo(xPx, top);
-      ctx.lineTo(xPx, bottom);
+      ctx.moveTo(xp(past[0].ts), yp(0));
+      for (var i = 0; i < past.length; i++) ctx.lineTo(xp(past[i].ts), yp(past[i].bac));
+      ctx.lineTo(xp(past[past.length-1].ts), yp(0));
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(124,111,224,0.15)';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(xp(past[0].ts), yp(past[0].bac));
+      for (var i = 1; i < past.length; i++) ctx.lineTo(xp(past[i].ts), yp(past[i].bac));
+      ctx.strokeStyle = '#7c6fe0';
+      ctx.lineWidth = 2.5;
+      ctx.setLineDash([]);
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+    }
+
+    /* future dashed */
+    if (future.length > 1) {
+      ctx.beginPath();
+      ctx.moveTo(xp(future[0].ts), yp(future[0].bac));
+      for (var i = 1; i < future.length; i++) ctx.lineTo(xp(future[i].ts), yp(future[i].bac));
+      ctx.strokeStyle = 'rgba(124,111,224,0.55)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([6, 4]);
+      ctx.lineJoin = 'round';
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(255,255,255,0.4)';
-      ctx.font      = 'bold 10px system-ui';
-      ctx.textAlign = 'center';
-      ctx.fillText('Maintenant', xPx, top - 4);
-      ctx.restore();
+    }
+
+    /* X axis labels */
+    ctx.fillStyle = '#888899';
+    ctx.font = '10px system-ui, -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    var spanH = (maxTs - minTs) / 3600000;
+    var hStep = spanH <= 6 ? 1 : spanH <= 12 ? 2 : 3;
+    var startH = new Date(minTs).getHours() + 1;
+    for (var h = startH; h <= startH + 25; h += hStep) {
+      var d = new Date(minTs);
+      d.setHours(h % 24, 0, 0, 0);
+      if (h >= 24) d.setDate(d.getDate() + Math.floor(h / 24));
+      var txp = xp(d.getTime());
+      if (txp < ml + 8 || txp > ml + pw - 5) continue;
+      if (d.getTime() > maxTs + 60000) break;
+      ctx.fillStyle = '#888899';
+      ctx.fillText(pad(h % 24) + 'h', txp, mt + ph + 16);
+      ctx.strokeStyle = '#2a2a3a';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(txp, mt + ph); ctx.lineTo(txp, mt + ph + 4);
+      ctx.stroke();
+    }
+
+    /* border */
+    ctx.strokeStyle = '#2a2a3a';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([]);
+    ctx.strokeRect(ml, mt, pw, ph);
+  }
+
+  /* ── RENDER BAC ── */
+  function renderBAC(bac) {
+    var v = document.getElementById('bac-value');
+    var s = document.getElementById('bac-status');
+    v.textContent = bac.toFixed(2);
+    if (bac >= LEGAL) {
+      v.className = 'bac-value c-red';
+      s.textContent = '🚫 Ne pas conduire';
+      s.className = 'bac-status s-danger';
+    } else if (bac >= YOUNG) {
+      v.className = 'bac-value c-amber';
+      s.textContent = '⚠️ Limite jeune conducteur dépassée';
+      s.className = 'bac-status s-warn';
+    } else {
+      v.className = 'bac-value c-green';
+      s.textContent = '✓ Peut conduire';
+      s.className = 'bac-status s-ok';
     }
   }
-};
 
-function renderChart(curve) {
-  const canvas = document.getElementById('bac-chart');
-  const noGraph = document.getElementById('no-graph');
+  /* ── RENDER DRIVE ── */
+  function renderDrive(curve) {
+    var bac  = bacAtNow(curve);
+    var dtEl = document.getElementById('drive-time');
+    var diEl = document.getElementById('drive-icon');
+    var dsEl = document.getElementById('drive-sub');
+    var now  = Date.now();
 
-  if (!curve.length) {
-    canvas.style.display = 'none';
-    noGraph.style.display = 'flex';
-    noGraph.textContent = 'Ajoutez un verre pour voir le graphique';
-    if (chart) { chart.destroy(); chart = null; }
-    return;
+    if (bac < LEGAL) {
+      diEl.textContent = '🟢';
+      dtEl.textContent = 'Maintenant ✓';
+      dtEl.className   = 'drive-time c-green';
+      dsEl.textContent = 'Limite jeune conducteur : 0,2 g/L';
+      return;
+    }
+
+    var ts = driveTimestamp(curve);
+    diEl.textContent = '🔴';
+    dtEl.className   = 'drive-time c-red';
+
+    if (!ts) {
+      dtEl.textContent = '> 24 h';
+      dsEl.textContent = "Trop d'alcool consommé";
+      return;
+    }
+
+    var mins = Math.ceil((ts - now) / 60000);
+    var h = Math.floor(mins / 60);
+    var m = mins % 60;
+    dtEl.textContent = fmtTime(ts);
+    dsEl.textContent = h > 0
+      ? 'Dans ' + h + 'h' + (m ? m + 'min' : '') + ' · Limite 0,5 g/L'
+      : 'Dans ' + m + ' min · Limite 0,5 g/L';
   }
 
-  if (typeof Chart === 'undefined') {
-    canvas.style.display = 'none';
-    noGraph.style.display = 'flex';
-    noGraph.textContent = 'Graphique non disponible (connexion requise au premier chargement)';
-    return;
+  /* ── RENDER DRINKS LIST ── */
+  function renderList() {
+    var el = document.getElementById('drinks-list');
+    if (!state.drinks.length) {
+      el.innerHTML = '<div class="empty-state"><div class="empty-icon">🫗</div><div>Aucun verre ajouté</div></div>';
+      return;
+    }
+    var sorted = state.drinks.slice().sort(function(a,b){ return a.ts - b.ts; });
+    el.innerHTML = sorted.map(function(d) {
+      return '<div class="drink-item">' +
+        '<div class="di-emoji">' + d.emoji + '</div>' +
+        '<div class="di-info">' +
+          '<div class="di-name">' + d.name + '</div>' +
+          '<div class="di-meta">' + fmtTime(d.ts) + ' · ' + getFood(d.foodId).name + ' · ' + d.rawG + 'g alcool</div>' +
+        '</div>' +
+        '<div class="di-g">+' + d.rawG + 'g</div>' +
+        '<button class="btn-del" data-id="' + d.id + '">×</button>' +
+      '</div>';
+    }).join('');
   }
 
-  canvas.style.display = 'block';
-  noGraph.style.display = 'none';
+  /* ── MODAL ── */
+  function renderModal() {
+    var dg = document.getElementById('drink-grid');
+    dg.innerHTML = DRINKS.map(function(d) {
+      return '<div class="drink-choice' + (selDrink === d.id ? ' sel' : '') + '" data-drink="' + d.id + '">' +
+        '<div class="dc-emoji">' + d.emoji + '</div>' +
+        '<div class="dc-name">' + d.name + '</div>' +
+        '<div class="dc-sub">' + d.sub + '</div>' +
+        '</div>';
+    }).join('');
 
-  const now = Date.now();
-  // Sample every 3rd point = 15-min intervals for readability
-  const pts = curve.filter((_, i) => i % 3 === 0);
+    document.getElementById('custom-section').style.display = selDrink === 'cust' ? 'block' : 'none';
 
-  const labels    = pts.map(p => fmtTime(p.ts));
-  const pastData  = pts.map(p => (p.ts <= now ? p.bac : null));
-  const futureData= pts.map(p => (p.ts >= now ? p.bac : null));
+    var fg = document.getElementById('food-grid');
+    fg.innerHTML = FOODS.map(function(f) {
+      return '<div class="food-choice' + (selFood === f.id ? ' sel' : '') + '" data-food="' + f.id + '">' +
+        '<div class="fc-emoji">' + f.emoji + '</div>' +
+        '<div class="fc-name">' + f.name + '</div>' +
+        '</div>';
+    }).join('');
 
-  const maxBac = Math.max(...curve.map(p => p.bac), 0.6);
-
-  if (chart) {
-    chart.data.labels            = labels;
-    chart.data.datasets[0].data  = pastData;
-    chart.data.datasets[1].data  = futureData;
-    chart.options.scales.y.max   = Math.ceil(maxBac * 10) / 10 + 0.1;
-    chart.update('none');
-    return;
+    updatePreview();
   }
 
-  const ctx = canvas.getContext('2d');
-  chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: 'Passé',
-          data: pastData,
-          borderColor: '#7c6fe0',
-          backgroundColor: 'rgba(124,111,224,0.18)',
-          borderWidth: 3,
-          pointRadius: 0,
-          fill: true,
-          tension: 0.4,
-          spanGaps: false,
-        },
-        {
-          label: 'Prévision',
-          data: futureData,
-          borderColor: 'rgba(124,111,224,0.6)',
-          backgroundColor: 'transparent',
-          borderWidth: 2,
-          borderDash: [6, 4],
-          pointRadius: 0,
-          fill: false,
-          tension: 0.4,
-          spanGaps: false,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#1e1e2a',
-          titleColor: '#888899',
-          bodyColor: '#e8e8f4',
-          borderColor: '#2a2a3a',
-          borderWidth: 1,
-          callbacks: {
-            label: ctx => ` ${(ctx.parsed.y ?? 0).toFixed(2)} g/L`,
-          },
-        },
-      },
-      scales: {
-        x: {
-          ticks: { color: '#888899', maxTicksLimit: 7, font: { size: 10 } },
-          grid:  { color: '#1e1e2a' },
-        },
-        y: {
-          min: 0,
-          max: Math.ceil(maxBac * 10) / 10 + 0.1,
-          ticks: { color: '#888899', font: { size: 10 }, callback: v => v.toFixed(1) },
-          grid:  { color: '#2a2a3a' },
-        },
-      },
-    },
-    plugins: [LIMIT_LINE_PLUGIN],
+  function updatePreview() {
+    var vol = parseFloat(document.getElementById('inp-vol').value) || 250;
+    var deg = parseFloat(document.getElementById('inp-deg').value) || 5;
+    var raw = computeRawGrams(selDrink, vol, deg);
+    var fc  = getFood(selFood);
+    var eff = (raw * fc.factor).toFixed(1);
+    document.getElementById('grams-preview').textContent =
+      '≈ ' + raw.toFixed(1) + ' g alcool pur · absorbé : ' + eff + ' g (' + fc.name + ')';
+  }
+
+  function openModal() {
+    var now = new Date();
+    document.getElementById('inp-time').value = pad(now.getHours()) + ':' + pad(now.getMinutes());
+    document.getElementById('modal-overlay').classList.remove('hidden');
+    renderModal();
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.add('hidden');
+  }
+
+  /* ── MAIN UPDATE ── */
+  function update() {
+    var curve = buildCurve();
+    var bac   = bacAtNow(curve);
+    renderBAC(bac);
+    renderDrive(curve);
+    renderList();
+    drawChart(curve);
+    document.getElementById('footer-note').textContent =
+      'Mise à jour : ' + new Date().toLocaleTimeString('fr-FR') +
+      ' · Formule Widmark · Élimination 0,15 g/L/h';
+  }
+
+  /* ── EVENT LISTENERS ── */
+
+  document.getElementById('inp-weight').addEventListener('change', function(e) {
+    var v = parseFloat(e.target.value);
+    if (v >= 40 && v <= 200) { state.weight = v; saveState(); update(); }
   });
-}
 
-/* ── Modal ── */
-function renderModal() {
-  // Drinks grid
-  document.getElementById('drink-grid').innerHTML = DRINKS.map(d => `
-    <div class="drink-choice${selDrink === d.id ? ' sel' : ''}" data-drink="${d.id}">
-      <div class="dc-emoji">${d.emoji}</div>
-      <div class="dc-name">${d.name}</div>
-      <div class="dc-sub">${d.sub}</div>
-    </div>`).join('');
+  document.getElementById('btn-male').addEventListener('click', function() {
+    state.gender = 'male';
+    document.getElementById('btn-male').className   = 'active';
+    document.getElementById('btn-female').className = '';
+    saveState(); update();
+  });
 
-  // Custom section
-  document.getElementById('custom-section').style.display =
-    selDrink === 'cust' ? 'block' : 'none';
+  document.getElementById('btn-female').addEventListener('click', function() {
+    state.gender = 'female';
+    document.getElementById('btn-male').className   = '';
+    document.getElementById('btn-female').className = 'active';
+    saveState(); update();
+  });
 
-  // Food grid
-  document.getElementById('food-grid').innerHTML = FOODS.map(f => `
-    <div class="food-choice${selFood === f.id ? ' sel' : ''}" data-food="${f.id}">
-      <div class="fc-emoji">${f.emoji}</div>
-      <div class="fc-name">${f.name}</div>
-    </div>`).join('');
+  document.getElementById('btn-open-modal').addEventListener('click', openModal);
 
-  updateGramsPreview();
-}
+  document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  });
 
-function updateGramsPreview() {
-  const vol = parseFloat(document.getElementById('inp-vol').value) || 250;
-  const deg = parseFloat(document.getElementById('inp-deg').value) || 5;
-  const raw = computeGrams(selDrink, vol, deg);
-  const fc  = foodCfg(selFood);
-  const eff = (raw * fc.factor).toFixed(1);
-  document.getElementById('grams-preview').textContent =
-    `≈ ${raw.toFixed(1)} g alcool pur · absorbé : ${eff} g (contexte ${fc.name})`;
-}
+  document.getElementById('drink-grid').addEventListener('click', function(e) {
+    var el = e.target;
+    while (el && !el.getAttribute('data-drink')) el = el.parentElement;
+    if (el) { selDrink = el.getAttribute('data-drink'); renderModal(); }
+  });
 
-function openModal() {
-  const now = new Date();
-  document.getElementById('inp-time').value =
-    String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
-  document.getElementById('modal-overlay').classList.remove('hidden');
-  renderModal();
-}
+  document.getElementById('food-grid').addEventListener('click', function(e) {
+    var el = e.target;
+    while (el && !el.getAttribute('data-food')) el = el.parentElement;
+    if (el) { selFood = el.getAttribute('data-food'); renderModal(); }
+  });
 
-function closeModal() {
-  document.getElementById('modal-overlay').classList.add('hidden');
-}
+  document.getElementById('inp-vol').addEventListener('input', updatePreview);
+  document.getElementById('inp-deg').addEventListener('input', updatePreview);
 
-/* ============================================================
-   MAIN UPDATE
-   ============================================================ */
+  document.getElementById('btn-confirm-drink').addEventListener('click', function() {
+    var tv = document.getElementById('inp-time').value;
+    if (!tv) return;
+    var parts = tv.split(':');
+    var ts = new Date();
+    ts.setHours(parseInt(parts[0], 10), parseInt(parts[1], 10), 0, 0);
+    var vol = parseFloat(document.getElementById('inp-vol').value) || 250;
+    var deg = parseFloat(document.getElementById('inp-deg').value) || 5;
+    state.drinks.push(buildDrink(selDrink, selFood, ts.getTime(), vol, deg));
+    saveState();
+    closeModal();
+    update();
+  });
 
-function update() {
-  const curve = buildCurve();
-  const bac   = bacAtNow(curve);
+  document.getElementById('drinks-list').addEventListener('click', function(e) {
+    var btn = e.target;
+    while (btn && !btn.getAttribute('data-id')) btn = btn.parentElement;
+    if (btn && btn.classList.contains('btn-del')) {
+      var id = btn.getAttribute('data-id');
+      state.drinks = state.drinks.filter(function(d) { return d.id !== id; });
+      saveState(); update();
+    }
+  });
 
-  renderBAC(bac);
-  renderDrive(curve);
-  renderDrinksList();
-  renderChart(curve);
+  document.getElementById('btn-clear').addEventListener('click', function() {
+    if (confirm('Effacer tous les verres ?')) {
+      state.drinks = []; saveState(); update();
+    }
+  });
 
-  document.getElementById('footer-note').textContent =
-    `Mise à jour : ${new Date().toLocaleTimeString('fr-FR')} · Formule Widmark · Élimination 0,15 g/L/h`;
-}
+  window.addEventListener('resize', function() {
+    var curve = buildCurve();
+    if (curve.length) drawChart(curve);
+  });
 
-/* ============================================================
-   EVENT LISTENERS
-   ============================================================ */
-
-// Weight
-document.getElementById('inp-weight').addEventListener('change', e => {
-  const v = parseFloat(e.target.value);
-  if (v >= 40 && v <= 200) { state.weight = v; saveState(); update(); }
-});
-
-// Gender
-document.getElementById('btn-male').addEventListener('click', () => {
-  state.gender = 'male';
-  document.getElementById('btn-male').className   = 'active';
-  document.getElementById('btn-female').className = '';
-  saveState(); update();
-});
-document.getElementById('btn-female').addEventListener('click', () => {
-  state.gender = 'female';
-  document.getElementById('btn-male').className   = '';
-  document.getElementById('btn-female').className = 'active';
-  saveState(); update();
-});
-
-// Open modal
-document.getElementById('btn-open-modal').addEventListener('click', openModal);
-
-// Close modal on backdrop
-document.getElementById('modal-overlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('modal-overlay')) closeModal();
-});
-
-// Drink choice
-document.getElementById('drink-grid').addEventListener('click', e => {
-  const ch = e.target.closest('[data-drink]');
-  if (ch) { selDrink = ch.dataset.drink; renderModal(); }
-});
-
-// Food choice
-document.getElementById('food-grid').addEventListener('click', e => {
-  const ch = e.target.closest('[data-food]');
-  if (ch) { selFood = ch.dataset.food; renderModal(); }
-});
-
-// Custom inputs live preview
-['inp-vol','inp-deg'].forEach(id =>
-  document.getElementById(id).addEventListener('input', updateGramsPreview)
-);
-
-// Confirm add drink
-document.getElementById('btn-confirm-drink').addEventListener('click', () => {
-  const timeVal = document.getElementById('inp-time').value;
-  if (!timeVal) return;
-  const [hh, mm] = timeVal.split(':').map(Number);
-  const ts = new Date(); ts.setHours(hh, mm, 0, 0);
-
-  const vol = parseFloat(document.getElementById('inp-vol').value) || 250;
-  const deg = parseFloat(document.getElementById('inp-deg').value) || 5;
-
-  state.drinks.push(buildDrink(selDrink, selFood, ts.getTime(), vol, deg));
-  saveState();
-  closeModal();
+  /* ── INIT ── */
+  loadState();
+  document.getElementById('inp-weight').value = state.weight;
+  document.getElementById('btn-male').className   = state.gender === 'male'   ? 'active' : '';
+  document.getElementById('btn-female').className = state.gender === 'female' ? 'active' : '';
   update();
-});
+  setInterval(update, 60000);
 
-// Delete drink
-document.getElementById('drinks-list').addEventListener('click', e => {
-  const btn = e.target.closest('.btn-del');
-  if (btn) {
-    state.drinks = state.drinks.filter(d => d.id !== btn.dataset.id);
-    saveState(); update();
-  }
-});
-
-// Clear all
-document.getElementById('btn-clear').addEventListener('click', () => {
-  if (confirm('Effacer tous les verres de la journée ?')) {
-    state.drinks = [];
-    saveState(); update();
-  }
-});
-
-/* ============================================================
-   INIT
-   ============================================================ */
-
-loadState();
-
-// Reflect loaded profile in UI
-document.getElementById('inp-weight').value = state.weight;
-document.getElementById('btn-male').className   = state.gender === 'male'   ? 'active' : '';
-document.getElementById('btn-female').className = state.gender === 'female' ? 'active' : '';
-
-update();
-setInterval(update, 60000);   // refresh every minute
+})();
 </script>
 </body>
 </html>
