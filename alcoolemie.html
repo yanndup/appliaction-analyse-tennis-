@@ -80,7 +80,7 @@
       display: table-cell; width: 50%; padding: 12px 6px; border: none;
       background: transparent; color: var(--muted); font-size: 13px; font-weight: 700;
       cursor: pointer; text-align: center; font-family: inherit;
-      -webkit-appearance: none; outline: none; touch-action: manipulation;
+      -webkit-appearance: none; outline: none;
     }
     .gbtn.on { background: var(--accent); color: #fff; }
     .gbtn:active { opacity: 0.8; }
@@ -91,7 +91,7 @@
       background: var(--accent); color: #fff; border: none;
       border-radius: var(--radius); font-size: 16px; font-weight: 700;
       cursor: pointer; text-align: center; font-family: inherit;
-      -webkit-appearance: none; outline: none; touch-action: manipulation;
+      -webkit-appearance: none; outline: none;
     }
     .btn-add:active { opacity: 0.8; }
 
@@ -104,7 +104,7 @@
     .d-meta  { font-size: 11px; color: var(--muted); margin-top: 2px; }
     .d-right { display: table-cell; width: 90px; text-align: right; vertical-align: middle; white-space: nowrap; }
     .d-g     { font-size: 12px; font-weight: 700; color: var(--accent); margin-right: 6px; }
-    .btn-del { display: inline-block; width: 30px; height: 30px; border-radius: 50%; background: rgba(244,67,54,0.12); color: var(--red); border: none; cursor: pointer; font-size: 18px; font-weight: 400; line-height: 30px; text-align: center; font-family: inherit; -webkit-appearance: none; vertical-align: middle; touch-action: manipulation; }
+    .btn-del { display: inline-block; width: 30px; height: 30px; border-radius: 50%; background: rgba(244,67,54,0.12); color: var(--red); border: none; cursor: pointer; font-size: 18px; font-weight: 400; line-height: 30px; text-align: center; font-family: inherit; -webkit-appearance: none; vertical-align: middle; }
     .btn-del:active { background: rgba(244,67,54,0.3); }
     .empty { text-align: center; padding: 24px; color: var(--muted); }
     .empty-icon { font-size: 36px; margin-bottom: 8px; }
@@ -121,7 +121,7 @@
       background: rgba(244,67,54,0.08); color: var(--red);
       border: 1px solid rgba(244,67,54,0.2); border-radius: var(--radius);
       font-size: 14px; font-weight: 600; cursor: pointer; text-align: center;
-      margin-bottom: 12px; font-family: inherit; -webkit-appearance: none; touch-action: manipulation;
+      margin-bottom: 12px; font-family: inherit; -webkit-appearance: none;
     }
     .btn-clear:active { background: rgba(244,67,54,0.2); }
     .footer { text-align: center; font-size: 11px; color: var(--muted); padding: 6px; line-height: 1.5; }
@@ -190,7 +190,7 @@
       display: block; width: 100%; padding: 16px;
       background: var(--accent); color: #fff; border: none;
       border-radius: var(--radius); font-size: 16px; font-weight: 700;
-      cursor: pointer; font-family: inherit; -webkit-appearance: none; touch-action: manipulation;
+      cursor: pointer; font-family: inherit; -webkit-appearance: none;
     }
     .btn-ok:active { opacity: 0.8; }
 
@@ -361,7 +361,7 @@ function buildCurve() {
   var elimGPH = ELIM * w * r;
   var sorted = ST.drinks.slice().sort(function(a,b){ return a.ts-b.ts; });
   var t0 = sorted[0].ts;
-  var STEP = 300000;
+  var STEP = 300000; /* 5 min */
   var blood = 0, pts = [];
   for (var i=0; i<=288; i++) {
     var ts = t0 + i*STEP;
@@ -456,7 +456,7 @@ function renderList() {
       '<div class="d-info"><div class="d-name">'+d.nm+'</div>'+
       '<div class="d-meta">'+fmtTs(d.ts)+' · '+getFood(d.fi).n+' · '+d.rg+'g</div></div>'+
       '<div class="d-right"><span class="d-g">+'+d.rg+'g</span>'+
-      '<button class="btn-del" onclick="delDrink(\''+d.id+'\')" type="button">×</button></div>'+
+      '<button class="btn-del" onclick="delDrink(\''+d.id+'\')">×</button></div>'+
       '</div>';
   }
   el.innerHTML = html;
@@ -484,6 +484,7 @@ function drawChart(pts) {
   var W=CW, H=CH, ml=42, mr=10, mt=22, mb=30, pw=W-ml-mr, ph=H-mt-mb;
   var now = Date.now();
 
+  /* sample */
   var spts = [];
   for (var i=0; i<pts.length; i+=3) spts.push(pts[i]);
   if (spts[spts.length-1] !== pts[pts.length-1]) spts.push(pts[pts.length-1]);
@@ -500,6 +501,7 @@ function drawChart(pts) {
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle='#1a1a24'; ctx.fillRect(ml,mt,pw,ph);
 
+  /* grid + Y labels */
   ctx.font='10px -apple-system,sans-serif'; ctx.textAlign='right';
   for (var v=0; v<=yMax+0.01; v+=0.2) {
     var ypv=yp(v);
@@ -509,6 +511,7 @@ function drawChart(pts) {
     ctx.fillStyle='#888899'; ctx.fillText(v.toFixed(1), ml-4, ypv+3);
   }
 
+  /* reference lines */
   function hRef(val, col, lbl) {
     var ypv=yp(val); if (ypv<mt||ypv>mt+ph) return;
     ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
@@ -520,6 +523,7 @@ function drawChart(pts) {
   hRef(LEGAL,'rgba(244,67,54,0.9)','0,5 g/L');
   hRef(YOUNG,'rgba(255,193,7,0.85)','0,2 g/L');
 
+  /* now line */
   var nx=Math.min(Math.max(xp(now),ml),ml+pw);
   ctx.save(); ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
   ctx.beginPath(); ctx.moveTo(nx,mt); ctx.lineTo(nx,mt+ph); ctx.stroke();
@@ -527,6 +531,7 @@ function drawChart(pts) {
   ctx.font='bold 10px -apple-system,sans-serif'; ctx.textAlign='center';
   ctx.fillText('Maintenant',nx,mt-5); ctx.restore();
 
+  /* split */
   var past=[], future=[];
   for (var i=0; i<spts.length; i++) { (spts[i].ts<=now?past:future).push(spts[i]); }
   if (past.length && future.length) future.unshift(past[past.length-1]);
@@ -547,6 +552,7 @@ function drawChart(pts) {
     ctx.setLineDash([]);
   }
 
+  /* X labels */
   ctx.fillStyle='#888899'; ctx.font='10px -apple-system,sans-serif'; ctx.textAlign='center';
   var spanH=(maxTs-minTs)/3600000, hStep=spanH<=6?1:spanH<=12?2:3;
   var d0=new Date(minTs), startH=d0.getHours()+1;
@@ -615,23 +621,35 @@ function renderDGrid() {
   var html='';
   for (var i=0;i<DRINKS.length;i++) {
     var d=DRINKS[i];
-    html+='<button type="button" class="dchoice'+(SEL_DRINK===d.id?' on':''+'" onclick="pickDrink(\''+d.id+'\')">')+
-      '<div class="dc-em">'+d.e+'</div>'+
-      '<div class="dc-nm">'+d.n+'</div>'+
-      '<div class="dc-sb">'+d.s+'</div></button>';
+    var sel=SEL_DRINK===d.id?' on':'';
+    html+='<button type="button" class="dchoice'+sel+'" data-id="'+d.id+'">';
+    html+='<div class="dc-em">'+d.e+'</div>';
+    html+='<div class="dc-nm">'+d.n+'</div>';
+    html+='<div class="dc-sb">'+d.s+'</div></button>';
   }
-  document.getElementById('drink-grid').innerHTML=html;
-  document.getElementById('cust-section').style.display = SEL_DRINK==='cust'?'block':'none';
+  var grid=document.getElementById('drink-grid');
+  grid.innerHTML=html;
+  document.getElementById('cust-section').style.display=SEL_DRINK==='cust'?'block':'none';
+  var btns=grid.getElementsByTagName('button');
+  for (var i=0;i<btns.length;i++) {
+    btns[i].onclick=(function(id){ return function(){ pickDrink(id); }; })(btns[i].getAttribute('data-id'));
+  }
 }
 function renderFGrid() {
   var html='';
   for (var i=0;i<FOODS.length;i++) {
     var f=FOODS[i];
-    html+='<button type="button" class="fchoice'+(SEL_FOOD===f.id?' on':''+'" onclick="pickFood(\''+f.id+'\')">')+
-      '<div class="fc-em">'+f.e+'</div>'+
-      '<div class="fc-nm">'+f.n+'</div></button>';
+    var sel=SEL_FOOD===f.id?' on':'';
+    html+='<button type="button" class="fchoice'+sel+'" data-id="'+f.id+'">';
+    html+='<div class="fc-em">'+f.e+'</div>';
+    html+='<div class="fc-nm">'+f.n+'</div></button>';
   }
-  document.getElementById('food-grid').innerHTML=html;
+  var grid=document.getElementById('food-grid');
+  grid.innerHTML=html;
+  var btns=grid.getElementsByTagName('button');
+  for (var i=0;i<btns.length;i++) {
+    btns[i].onclick=(function(id){ return function(){ pickFood(id); }; })(btns[i].getAttribute('data-id'));
+  }
 }
 
 function pickDrink(id) { SEL_DRINK=id; renderDGrid(); refreshPreview(); }
