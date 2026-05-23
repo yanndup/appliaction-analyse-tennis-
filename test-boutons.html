@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test boutons</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #111; color: #eee; }
+    h2   { margin-bottom: 12px; font-size: 16px; color: #aaa; }
+    .box { background: #222; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+    .result { font-size: 28px; font-weight: bold; margin-bottom: 8px; }
+    .log    { font-size: 13px; color: #aaa; min-height: 20px; }
+    button, a.btn {
+      display: block; width: 100%; padding: 18px;
+      background: #4a90e2; color: white; border: none;
+      border-radius: 10px; font-size: 18px; font-weight: bold;
+      cursor: pointer; text-decoration: none; text-align: center;
+      margin-bottom: 10px; box-sizing: border-box;
+    }
+    button:active, a.btn:active { background: #357abd; }
+    .green { color: #4caf7d; }
+    .red   { color: #f44336; }
+    .amber { color: #ffc107; }
+  </style>
+</head>
+<body>
+
+<!-- TEST 1 : Le JavaScript tourne-t-il ? -->
+<div class="box">
+  <h2>TEST 1 — JavaScript actif ?</h2>
+  <div class="result red" id="t1">❌ JS ne tourne PAS</div>
+  <div class="log" id="t1-log"></div>
+</div>
+
+<!-- TEST 2 : onclick direct -->
+<div class="box">
+  <h2>TEST 2 — onclick direct</h2>
+  <div class="result" id="t2">En attente de tap...</div>
+  <button onclick="tap2()">Appuyer ici (onclick)</button>
+</div>
+
+<!-- TEST 3 : addEventListener click -->
+<div class="box">
+  <h2>TEST 3 — addEventListener click</h2>
+  <div class="result" id="t3">En attente de tap...</div>
+  <button id="btn3">Appuyer ici (addEventListener)</button>
+</div>
+
+<!-- TEST 4 : événements touch -->
+<div class="box">
+  <h2>TEST 4 — événements tactiles</h2>
+  <div class="result" id="t4">En attente de tap...</div>
+  <div class="log"   id="t4-log">touchstart / touchend / click seront logués</div>
+  <button id="btn4">Appuyer ici (touch log)</button>
+</div>
+
+<!-- TEST 5 : lien <a> -->
+<div class="box">
+  <h2>TEST 5 — lien &lt;a&gt; href="javascript:"</h2>
+  <div class="result" id="t5">En attente de tap...</div>
+  <a class="btn" href="javascript:tap5()">Appuyer ici (lien)</a>
+</div>
+
+<!-- TEST 6 : afficher/masquer div (simulation modal) -->
+<div class="box">
+  <h2>TEST 6 — Afficher / Masquer un panneau</h2>
+  <div class="result" id="t6">Panneau caché</div>
+  <button onclick="togglePanel()">Afficher / Masquer le panneau</button>
+  <div id="panel" style="display:none; background:#333; border-radius:8px; padding:16px; margin-top:10px; color:#fff;">
+    ✅ Le panneau est visible ! La modal fonctionnerait.
+  </div>
+</div>
+
+<!-- TEST 7 : localStorage -->
+<div class="box">
+  <h2>TEST 7 — localStorage</h2>
+  <div class="result" id="t7">Non testé</div>
+  <button onclick="testStorage()">Tester localStorage</button>
+</div>
+
+<!-- RÉSUMÉ -->
+<div class="box">
+  <h2>Résumé</h2>
+  <div id="summary" style="font-size:14px; line-height:1.8;"></div>
+</div>
+
+<script>
+
+/* ── TEST 1 : JS tourne ? ── */
+var T1 = document.getElementById('t1');
+T1.textContent = '✅ JS tourne correctement';
+T1.className = 'result green';
+document.getElementById('t1-log').textContent =
+  'User-agent : ' + navigator.userAgent.substring(0, 80);
+
+/* ── TEST 2 : onclick ── */
+function tap2() {
+  document.getElementById('t2').textContent = '✅ onclick fonctionne !';
+  document.getElementById('t2').className = 'result green';
+  updateSummary();
+}
+
+/* ── TEST 3 : addEventListener ── */
+var btn3 = document.getElementById('btn3');
+if (btn3) {
+  btn3.addEventListener('click', function() {
+    document.getElementById('t3').textContent = '✅ addEventListener click fonctionne !';
+    document.getElementById('t3').className = 'result green';
+    updateSummary();
+  });
+} else {
+  document.getElementById('t3').textContent = '❌ Élément btn3 introuvable';
+  document.getElementById('t3').className = 'result red';
+}
+
+/* ── TEST 4 : touch events ── */
+var btn4 = document.getElementById('btn4');
+var t4log = [];
+if (btn4) {
+  btn4.addEventListener('touchstart', function(e) {
+    t4log.push('touchstart');
+    document.getElementById('t4-log').textContent = t4log.join(' → ');
+  }, false);
+  btn4.addEventListener('touchend', function(e) {
+    t4log.push('touchend');
+    document.getElementById('t4-log').textContent = t4log.join(' → ');
+    document.getElementById('t4').textContent = '✅ Touch events fonctionnent !';
+    document.getElementById('t4').className = 'result green';
+    updateSummary();
+  }, false);
+  btn4.addEventListener('click', function() {
+    t4log.push('click');
+    document.getElementById('t4-log').textContent = t4log.join(' → ');
+  });
+}
+
+/* ── TEST 5 : lien <a> ── */
+function tap5() {
+  document.getElementById('t5').textContent = '✅ Lien javascript: fonctionne !';
+  document.getElementById('t5').className = 'result green';
+  updateSummary();
+}
+
+/* ── TEST 6 : show/hide ── */
+function togglePanel() {
+  var p = document.getElementById('panel');
+  var t = document.getElementById('t6');
+  if (p.style.display === 'none') {
+    p.style.display = 'block';
+    t.textContent = '✅ Panneau VISIBLE → la modal marcherait';
+    t.className = 'result green';
+  } else {
+    p.style.display = 'none';
+    t.textContent = 'Panneau caché';
+    t.className = 'result';
+  }
+  updateSummary();
+}
+
+/* ── TEST 7 : localStorage ── */
+function testStorage() {
+  var el = document.getElementById('t7');
+  try {
+    localStorage.setItem('bac_test', '1');
+    var v = localStorage.getItem('bac_test');
+    if (v === '1') {
+      el.textContent = '✅ localStorage fonctionne !';
+      el.className = 'result green';
+    } else {
+      el.textContent = '⚠️ localStorage écrit mais ne lit pas';
+      el.className = 'result amber';
+    }
+    localStorage.removeItem('bac_test');
+  } catch(e) {
+    el.textContent = '❌ localStorage bloqué : ' + e.message;
+    el.className = 'result red';
+  }
+  updateSummary();
+}
+
+/* ── RÉSUMÉ ── */
+function updateSummary() {
+  var items = [
+    { id:'t2', lbl:'onclick direct' },
+    { id:'t3', lbl:'addEventListener click' },
+    { id:'t4', lbl:'Touch events' },
+    { id:'t5', lbl:'Lien javascript:' },
+    { id:'t6', lbl:'Afficher/Masquer' },
+    { id:'t7', lbl:'localStorage' },
+  ];
+  var html = '';
+  for (var i=0; i<items.length; i++) {
+    var el = document.getElementById(items[i].id);
+    var ok = el && el.textContent.indexOf('✅') >= 0;
+    html += (ok ? '✅' : '⏳') + ' ' + items[i].lbl + '<br>';
+  }
+  document.getElementById('summary').innerHTML = html;
+}
+updateSummary();
+
+</script>
+</body>
+</html>
