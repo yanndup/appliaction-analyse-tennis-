@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0d0d12">
+  <title>Alcoolémie</title>
+  <style>
+    :root {
+      --bg: #0d0d12;
+      --surface: #16161f;
+      --surface2: #1e1e2a;
+      --border: #2a2a3a;
+      --accent: #7c6fe0;
+      --green: #4caf7d;
+      --amber: #ffc107;
+      --red: #f44336;
+      --orange: #ff7043;
+      --text: #e8e8f4;
+      --muted: #888899;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      max-width: 500px;
+      margin: 0 auto;
+      padding-bottom: 88px;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: var(--surface);
+      padding: 20px 20px 16px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .bac-value {
+      font-size: 76px;
+      font-weight: 800;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      transition: color 0.4s;
+    }
+    .bac-unit {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+    .bac-status {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .s-ok    { background: rgba(76,175,125,0.18); color: var(--green); }
+    .s-warn  { background: rgba(255,193,7,0.18);  color: var(--amber); }
+    .s-danger{ background: rgba(244,67,54,0.18);  color: var(--red);   }
+    .c-green { color: var(--green); }
+    .c-amber { color: var(--amber); }
+    .c-red   { color: var(--red);   }
+
+    /* ── Content ── */
+    .content { padding: 14px 14px 0; }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+    }
+    .card-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── Drive card ── */
+    .drive-row { display: flex; align-items: center; gap: 14px; }
+    .drive-icon { font-size: 36px; flex-shrink: 0; }
+    .drive-label { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+    .drive-time  { font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .drive-sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ── Profile ── */
+    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pfield label {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .pfield input[type="number"] {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 20px;
+      font-weight: 700;
+      padding: 10px 12px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .pfield input[type="number"]:focus { border-color: var(--accent); }
+    .gender-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--surface2);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .gender-toggle button {
+      padding: 11px 6px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .gender-toggle button.active { background: var(--accent); color: #fff; }
+
+    /* ── Add button ── */
+    .btn-add {
+      width: 100%;
+      padding: 18px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .btn-add:active { opacity: 0.8; transform: scale(0.98); }
+    .btn-add-icon { font-size: 22px; font-weight: 400; line-height: 1; }
+
+    /* ── Drinks list ── */
+    .drink-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .drink-item:last-child { border-bottom: none; }
+    .di-emoji { font-size: 28px; flex-shrink: 0; }
+    .di-info  { flex: 1; min-width: 0; }
+    .di-name  { font-size: 14px; font-weight: 600; }
+    .di-meta  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .di-g     { font-size: 13px; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+    .btn-del  {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(244,67,54,0.12); color: var(--red);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .btn-del:active { background: rgba(244,67,54,0.28); }
+    .empty-state { text-align: center; padding: 24px; color: var(--muted); }
+    .empty-state .ei { font-size: 38px; margin-bottom: 8px; }
+
+    /* ── Chart ── */
+    .chart-wrap { position: relative; height: 230px; }
+    .no-graph {
+      height: 230px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 13px;
+    }
+
+    /* ── Clear button ── */
+    .btn-clear {
+      width: 100%;
+      padding: 12px;
+      background: rgba(244,67,54,0.1);
+      color: var(--red);
+      border: 1px solid rgba(244,67,54,0.25);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: background 0.2s;
+    }
+    .btn-clear:active { background: rgba(244,67,54,0.22); }
+
+    .footer-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      padding: 8px;
+      line-height: 1.5;
+    }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 200;
+      display: flex; align-items: flex-end;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal {
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+      padding: 10px 16px 44px;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      max-height: 92vh;
+      overflow-y: auto;
+      border-top: 1px solid var(--border);
+    }
+    .modal-handle {
+      width: 36px; height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 10px auto 18px;
+    }
+    .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 18px; text-align: center; }
+
+    .section-lbl {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 1.2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px;
+    }
+
+    /* Drink choice grid */
+    .drink-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .drink-choice {
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .drink-choice.sel { border-color: var(--accent); background: rgba(124,111,224,0.14); }
+    .dc-emoji { font-size: 22px; margin-bottom: 3px; }
+    .dc-name  { font-size: 11px; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .dc-sub   { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+    /* Custom inputs */
+    .custom-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px; margin-bottom: 16px;
+    }
+    .igroup label {
+      display: block; font-size: 11px; color: var(--muted);
+      margin-bottom: 4px; font-weight: 600;
+    }
+    .igroup input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 18px; font-weight: 600;
+      padding: 10px 12px;
+      outline: none; -webkit-appearance: none;
+    }
+    .igroup input:focus { border-color: var(--accent); }
+
+    /* Food grid */
+    .food-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .food-choice {
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .food-choice.sel { border-color: var(--amber); background: rgba(255,193,7,0.10); }
+    .fc-emoji { font-size: 20px; margin-bottom: 3px; }
+    .fc-name  { font-size: 10px; font-weight: 700; color: var(--muted); line-height: 1.2; }
+
+    /* Time input */
+    .time-inp {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 22px; font-weight: 700;
+      padding: 12px;
+      outline: none;
+      margin-bottom: 20px;
+      text-align: center;
+      -webkit-appearance: none;
+    }
+    .time-inp:focus { border-color: var(--accent); }
+
+    .btn-confirm {
+      width: 100%;
+      padding: 16px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 16px; font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .btn-confirm:active { opacity: 0.8; transform: scale(0.98); }
+
+    /* computed grams preview */
+    .grams-preview {
+      text-align: center;
+      padding: 8px;
+      background: rgba(124,111,224,0.1);
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="header">
+  <div class="header-title">Alcoolémie actuelle</div>
+  <div class="bac-value c-green" id="bac-value">0.00</div>
+  <div class="bac-unit">g/L de sang</div>
+  <div class="bac-status s-ok" id="bac-status">✓ Peut conduire</div>
+</div>
+
+<!-- ── CONTENT ── -->
+<div class="content">
+
+  <!-- Drive time -->
+  <div class="card">
+    <div class="card-title">Conduite autorisée</div>
+    <div class="drive-row">
+      <div class="drive-icon" id="drive-icon">🟢</div>
+      <div>
+        <div class="drive-label">Limite légale — 0,5 g/L (France)</div>
+        <div class="drive-time c-green" id="drive-time">Maintenant ✓</div>
+        <div class="drive-sub" id="drive-sub">Jeune conducteur : 0,2 g/L</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile -->
+  <div class="card">
+    <div class="card-title">Votre profil</div>
+    <div class="profile-grid">
+      <div class="pfield">
+        <label>Poids (kg)</label>
+        <input type="number" id="inp-weight" value="70" min="40" max="200" step="1">
+      </div>
+      <div class="pfield">
+        <label>Genre</label>
+        <div class="gender-toggle">
+          <button id="btn-male"   class="active">Homme</button>
+          <button id="btn-female" class="">Femme</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add drink -->
+  <button class="btn-add" id="btn-open-modal">
+    <span class="btn-add-icon">＋</span>
+    <span>Ajouter un verre</span>
+  </button>
+
+  <!-- Drinks list -->
+  <div class="card">
+    <div class="card-title">Verres du jour</div>
+    <div id="drinks-list"></div>
+  </div>
+
+  <!-- Chart -->
+  <div class="card">
+    <div class="card-title">Évolution de l'alcoolémie</div>
+    <div class="chart-wrap">
+      <div class="no-graph" id="no-graph">Ajoutez un verre pour voir le graphique</div>
+      <canvas id="bac-chart" style="display:none"></canvas>
+    </div>
+  </div>
+
+  <!-- Clear -->
+  <button class="btn-clear" id="btn-clear">🗑 Effacer tous les verres</button>
+
+  <div class="footer-note" id="footer-note"></div>
+
+</div>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Ajouter un verre</div>
+
+    <div class="section-lbl">Type de boisson</div>
+    <div class="drink-grid" id="drink-grid"></div>
+
+    <div id="custom-section" style="display:none">
+      <div class="section-lbl">Personnalisé</div>
+      <div class="custom-row">
+        <div class="igroup">
+          <label>Volume (mL)</label>
+          <input type="number" id="inp-vol" value="250" min="10" max="2000">
+        </div>
+        <div class="igroup">
+          <label>Degré (°)</label>
+          <input type="number" id="inp-deg" value="5" min="0.5" max="95" step="0.1">
+        </div>
+      </div>
+    </div>
+
+    <div class="grams-preview" id="grams-preview">≈ 10,0 g d'alcool pur</div>
+
+    <div class="section-lbl">Contexte alimentaire</div>
+    <div class="food-grid" id="food-grid"></div>
+
+    <div class="section-lbl">Heure de consommation</div>
+    <input type="time" id="inp-time" class="time-inp">
+
+    <button class="btn-confirm" id="btn-confirm-drink">Ajouter ce verre</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+'use strict';
+
+/* ============================================================
+   CONFIG
+   ============================================================ */
+
+const LEGAL_LIMIT = 0.5;   // g/L
+const YOUNG_LIMIT = 0.2;   // g/L (< 3 ans de permis)
+const ELIM_RATE   = 0.15;  // g/L/hr (average)
+
+const DRINKS = [
+  { id: 'b25',   emoji: '🍺', name: 'Bière 25cl',    sub: '5° · 10,0g',  grams: 10.0 },
+  { id: 'b50',   emoji: '🍺', name: 'Bière 50cl',    sub: '5° · 20,0g',  grams: 20.0 },
+  { id: 'vin',   emoji: '🍷', name: 'Vin 12cl',      sub: '12° · 11,5g', grams: 11.5 },
+  { id: 'champ', emoji: '🥂', name: 'Champagne 12cl', sub: '12° · 11,5g', grams: 11.5 },
+  { id: 'aper',  emoji: '🍸', name: 'Apéritif 6cl',  sub: '18° · 8,6g',  grams: 8.6  },
+  { id: 'whis',  emoji: '🥃', name: 'Whisky 4cl',    sub: '40° · 12,8g', grams: 12.8 },
+  { id: 'cock',  emoji: '🍹', name: 'Cocktail 12cl', sub: '10° · 9,6g',  grams: 9.6  },
+  { id: 'cust',  emoji: '🫗', name: 'Personnalisé',  sub: 'Saisie libre', grams: 0    },
+];
+
+// factor = fraction d'alcool réellement absorbée
+// absH   = durée d'absorption (heures)
+const FOODS = [
+  { id: 'empty',   emoji: '⚡',  name: 'À jeun',    factor: 1.00, absH: 0.50 },
+  { id: 'snack',   emoji: '🥜',  name: 'Apéro',     factor: 0.92, absH: 0.75 },
+  { id: 'meal',    emoji: '🍽️', name: 'Repas',     factor: 0.75, absH: 1.50 },
+  { id: 'dessert', emoji: '🍮',  name: 'Dessert',   factor: 0.70, absH: 1.75 },
+  { id: 'gouter',  emoji: '🥐',  name: 'Goûter',    factor: 0.85, absH: 1.00 },
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+
+let state = { weight: 70, gender: 'male', drinks: [] };
+let chart = null;
+let selDrink = 'b25';
+let selFood  = 'empty';
+
+/* ============================================================
+   PERSISTENCE
+   ============================================================ */
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem('bac_app_v2');
+    if (!raw) return;
+    const s = JSON.parse(raw);
+    state.weight = Number(s.weight) || 70;
+    state.gender = s.gender === 'female' ? 'female' : 'male';
+    const cutoff = Date.now() - 24 * 3600 * 1000;
+    state.drinks = (s.drinks || []).filter(d => d.ts >= cutoff);
+  } catch (e) { /* ignore */ }
+}
+
+function saveState() {
+  localStorage.setItem('bac_app_v2', JSON.stringify(state));
+}
+
+/* ============================================================
+   BAC SIMULATION  (Widmark + numerical integration, step=5min)
+   ============================================================ */
+
+function buildCurve() {
+  if (!state.drinks.length) return [];
+
+  const r   = state.gender === 'male' ? 0.7 : 0.6;
+  const wkg = state.weight;
+  const elimGPH = ELIM_RATE * wkg * r;   // grams eliminated per hour
+
+  const sorted = [...state.drinks].sort((a, b) => a.ts - b.ts);
+  const t0  = sorted[0].ts;
+  const STEP_MS   = 5 * 60 * 1000;   // 5 minutes
+  const MAX_STEPS = 24 * 12;          // 24 hours
+
+  let blood = 0;   // grams of alcohol currently in blood
+  const pts = [];
+
+  for (let i = 0; i <= MAX_STEPS; i++) {
+    const ts   = t0 + i * STEP_MS;
+    const stepH = STEP_MS / 3_600_000;
+
+    // Absorption from active drinks
+    for (const d of sorted) {
+      const absEnd = d.ts + d.absMs;
+      if (ts >= d.ts && ts < absEnd) {
+        const rate = d.effG / (d.absMs / 3_600_000); // g/hr
+        blood += rate * stepH;
+      }
+    }
+
+    // Elimination (constant rate, floor at 0)
+    blood = Math.max(0, blood - elimGPH * stepH);
+
+    const bac = parseFloat((blood / (wkg * r)).toFixed(4));
+    pts.push({ ts, bac });
+
+    if (bac < 0.001 && i > 12) break;   // curve reached 0, stop early
+  }
+  return pts;
+}
+
+function bacAtNow(curve) {
+  if (!curve.length) return 0;
+  const now = Date.now();
+  let best = curve[0];
+  for (const p of curve) {
+    if (Math.abs(p.ts - now) < Math.abs(best.ts - now)) best = p;
+    if (p.ts > now + 60_000) break;
+  }
+  return best.bac;
+}
+
+function driveTs(curve) {
+  const now = Date.now();
+  for (const p of curve) {
+    if (p.ts < now) continue;
+    if (p.bac < LEGAL_LIMIT) return p.ts;
+  }
+  return null;
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+function fmtTime(ts) {
+  const d = new Date(ts);
+  return String(d.getHours()).padStart(2,'0') + 'h' + String(d.getMinutes()).padStart(2,'0');
+}
+
+function drinkCfg(id)  { return DRINKS.find(d => d.id === id); }
+function foodCfg(id)   { return FOODS.find(f => f.id === id); }
+
+function computeGrams(drinkId, vol, deg) {
+  if (drinkId === 'cust') return Math.round(vol * (deg / 100) * 0.8 * 10) / 10;
+  return drinkCfg(drinkId).grams;
+}
+
+function buildDrink(drinkId, foodId, ts, vol, deg) {
+  const dc  = drinkCfg(drinkId);
+  const fc  = foodCfg(foodId);
+  const raw = computeGrams(drinkId, vol, deg);
+  return {
+    id:    Date.now().toString(36) + Math.random().toString(36).slice(2),
+    drinkId, foodId,
+    emoji: dc.emoji,
+    name:  drinkId === 'cust' ? `Perso (${vol}mL, ${deg}°)` : dc.name,
+    rawG:  raw,
+    effG:  parseFloat((raw * fc.factor).toFixed(2)),
+    absMs: Math.round(fc.absH * 3_600_000),
+    ts,
+  };
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+
+function renderDrinksList() {
+  const el = document.getElementById('drinks-list');
+  if (!state.drinks.length) {
+    el.innerHTML = `<div class="empty-state"><div class="ei">🫗</div><div>Aucun verre ajouté</div></div>`;
+    return;
+  }
+  const sorted = [...state.drinks].sort((a, b) => a.ts - b.ts);
+  el.innerHTML = sorted.map(d => `
+    <div class="drink-item">
+      <div class="di-emoji">${d.emoji}</div>
+      <div class="di-info">
+        <div class="di-name">${d.name}</div>
+        <div class="di-meta">${fmtTime(d.ts)} · ${foodCfg(d.foodId).name} · ${d.rawG}g alcool pur</div>
+      </div>
+      <div class="di-g">+${d.rawG}g</div>
+      <button class="btn-del" data-id="${d.id}">×</button>
+    </div>`).join('');
+}
+
+function renderBAC(bac) {
+  const vEl = document.getElementById('bac-value');
+  const sEl = document.getElementById('bac-status');
+  vEl.textContent = bac.toFixed(2);
+  if (bac >= LEGAL_LIMIT) {
+    vEl.className = 'bac-value c-red';
+    sEl.textContent = '🚫 Ne pas conduire';
+    sEl.className   = 'bac-status s-danger';
+  } else if (bac >= YOUNG_LIMIT) {
+    vEl.className = 'bac-value c-amber';
+    sEl.textContent = '⚠️ Limite jeune conducteur dépassée';
+    sEl.className   = 'bac-status s-warn';
+  } else {
+    vEl.className = 'bac-value c-green';
+    sEl.textContent = '✓ Peut conduire';
+    sEl.className   = 'bac-status s-ok';
+  }
+}
+
+function renderDrive(curve) {
+  const now  = Date.now();
+  const bac  = bacAtNow(curve);
+  const dtEl = document.getElementById('drive-time');
+  const diEl = document.getElementById('drive-icon');
+  const dsEl = document.getElementById('drive-sub');
+
+  if (bac < LEGAL_LIMIT) {
+    diEl.textContent = '🟢';
+    dtEl.textContent = 'Maintenant ✓';
+    dtEl.className   = 'drive-time c-green';
+    dsEl.textContent = 'Limite jeune conducteur : 0,2 g/L';
+    return;
+  }
+
+  const ts = driveTs(curve);
+  diEl.textContent = '🔴';
+  dtEl.className   = 'drive-time c-red';
+
+  if (!ts) {
+    dtEl.textContent = '> 24 h';
+    dsEl.textContent = 'Trop d\'alcool consommé';
+    return;
+  }
+
+  const mins = Math.ceil((ts - now) / 60_000);
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  dtEl.textContent = fmtTime(ts);
+  if (h > 0) {
+    dsEl.textContent = `Dans ${h}h${m > 0 ? m + 'min' : ''} · Limite 0,5 g/L`;
+  } else {
+    dsEl.textContent = `Dans ${m} min · Limite 0,5 g/L`;
+  }
+}
+
+/* ── Chart ── */
+const LIMIT_LINE_PLUGIN = {
+  id: 'limitLines',
+  afterDraw(ch) {
+    const { ctx, chartArea: { left, right, top, bottom }, scales: { y } } = ch;
+
+    function drawHLine(val, color, label) {
+      const yPx = y.getPixelForValue(val);
+      if (yPx < top || yPx > bottom) return;
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth   = 1.5;
+      ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      ctx.moveTo(left, yPx);
+      ctx.lineTo(right, yPx);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle  = color;
+      ctx.font       = 'bold 10px system-ui';
+      ctx.textAlign  = 'right';
+      ctx.fillText(label, right - 4, yPx - 4);
+      ctx.restore();
+    }
+
+    drawHLine(LEGAL_LIMIT, 'rgba(244,67,54,0.8)',   '0,5 g/L');
+    drawHLine(YOUNG_LIMIT, 'rgba(255,193,7,0.65)',  '0,2 g/L');
+
+    // Vertical "now" line
+    const nowLabel = fmtTime(Date.now());
+    const labels   = ch.data.labels;
+    const idx      = labels.findIndex(l => l >= nowLabel);
+    if (idx >= 0 && idx < labels.length) {
+      const x = ch.scales.x;
+      const xPx = x.getPixelForTick(idx);
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.lineWidth   = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(xPx, top);
+      ctx.lineTo(xPx, bottom);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(255,255,255,0.4)';
+      ctx.font      = 'bold 10px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText('Maintenant', xPx, top - 4);
+      ctx.restore();
+    }
+  }
+};
+
+function renderChart(curve) {
+  const canvas = document.getElementById('bac-chart');
+  const noGraph = document.getElementById('no-graph');
+
+  if (!curve.length) {
+    canvas.style.display = 'none';
+    noGraph.style.display = 'flex';
+    if (chart) { chart.destroy(); chart = null; }
+    return;
+  }
+
+  canvas.style.display = 'block';
+  noGraph.style.display = 'none';
+
+  const now = Date.now();
+  // Sample every 3rd point = 15-min intervals for readability
+  const pts = curve.filter((_, i) => i % 3 === 0);
+
+  const labels    = pts.map(p => fmtTime(p.ts));
+  const pastData  = pts.map(p => (p.ts <= now ? p.bac : null));
+  const futureData= pts.map(p => (p.ts >= now ? p.bac : null));
+
+  const maxBac = Math.max(...curve.map(p => p.bac), 0.6);
+
+  if (chart) {
+    chart.data.labels            = labels;
+    chart.data.datasets[0].data  = pastData;
+    chart.data.datasets[1].data  = futureData;
+    chart.options.scales.y.max   = Math.ceil(maxBac * 10) / 10 + 0.1;
+    chart.update('none');
+    return;
+  }
+
+  const ctx = canvas.getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Passé',
+          data: pastData,
+          borderColor: '#7c6fe0',
+          backgroundColor: 'rgba(124,111,224,0.18)',
+          borderWidth: 3,
+          pointRadius: 0,
+          fill: true,
+          tension: 0.4,
+          spanGaps: false,
+        },
+        {
+          label: 'Prévision',
+          data: futureData,
+          borderColor: 'rgba(124,111,224,0.6)',
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          borderDash: [6, 4],
+          pointRadius: 0,
+          fill: false,
+          tension: 0.4,
+          spanGaps: false,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1e1e2a',
+          titleColor: '#888899',
+          bodyColor: '#e8e8f4',
+          borderColor: '#2a2a3a',
+          borderWidth: 1,
+          callbacks: {
+            label: ctx => ` ${(ctx.parsed.y ?? 0).toFixed(2)} g/L`,
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: { color: '#888899', maxTicksLimit: 7, font: { size: 10 } },
+          grid:  { color: '#1e1e2a' },
+        },
+        y: {
+          min: 0,
+          max: Math.ceil(maxBac * 10) / 10 + 0.1,
+          ticks: { color: '#888899', font: { size: 10 }, callback: v => v.toFixed(1) },
+          grid:  { color: '#2a2a3a' },
+        },
+      },
+    },
+    plugins: [LIMIT_LINE_PLUGIN],
+  });
+}
+
+/* ── Modal ── */
+function renderModal() {
+  // Drinks grid
+  document.getElementById('drink-grid').innerHTML = DRINKS.map(d => `
+    <div class="drink-choice${selDrink === d.id ? ' sel' : ''}" data-drink="${d.id}">
+      <div class="dc-emoji">${d.emoji}</div>
+      <div class="dc-name">${d.name}</div>
+      <div class="dc-sub">${d.sub}</div>
+    </div>`).join('');
+
+  // Custom section
+  document.getElementById('custom-section').style.display =
+    selDrink === 'cust' ? 'block' : 'none';
+
+  // Food grid
+  document.getElementById('food-grid').innerHTML = FOODS.map(f => `
+    <div class="food-choice${selFood === f.id ? ' sel' : ''}" data-food="${f.id}">
+      <div class="fc-emoji">${f.emoji}</div>
+      <div class="fc-name">${f.name}</div>
+    </div>`).join('');
+
+  updateGramsPreview();
+}
+
+function updateGramsPreview() {
+  const vol = parseFloat(document.getElementById('inp-vol').value) || 250;
+  const deg = parseFloat(document.getElementById('inp-deg').value) || 5;
+  const raw = computeGrams(selDrink, vol, deg);
+  const fc  = foodCfg(selFood);
+  const eff = (raw * fc.factor).toFixed(1);
+  document.getElementById('grams-preview').textContent =
+    `≈ ${raw.toFixed(1)} g alcool pur · absorbé : ${eff} g (contexte ${fc.name})`;
+}
+
+function openModal() {
+  const now = new Date();
+  document.getElementById('inp-time').value =
+    String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('modal-overlay').classList.remove('hidden');
+  renderModal();
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.add('hidden');
+}
+
+/* ============================================================
+   MAIN UPDATE
+   ============================================================ */
+
+function update() {
+  const curve = buildCurve();
+  const bac   = bacAtNow(curve);
+
+  renderBAC(bac);
+  renderDrive(curve);
+  renderDrinksList();
+  renderChart(curve);
+
+  document.getElementById('footer-note').textContent =
+    `Mise à jour : ${new Date().toLocaleTimeString('fr-FR')} · Formule Widmark · Élimination 0,15 g/L/h`;
+}
+
+/* ============================================================
+   EVENT LISTENERS
+   ============================================================ */
+
+// Weight
+document.getElementById('inp-weight').addEventListener('change', e => {
+  const v = parseFloat(e.target.value);
+  if (v >= 40 && v <= 200) { state.weight = v; saveState(); update(); }
+});
+
+// Gender
+document.getElementById('btn-male').addEventListener('click', () => {
+  state.gender = 'male';
+  document.getElementById('btn-male').className   = 'active';
+  document.getElementById('btn-female').className = '';
+  saveState(); update();
+});
+document.getElementById('btn-female').addEventListener('click', () => {
+  state.gender = 'female';
+  document.getElementById('btn-male').className   = '';
+  document.getElementById('btn-female').className = 'active';
+  saveState(); update();
+});
+
+// Open modal
+document.getElementById('btn-open-modal').addEventListener('click', openModal);
+
+// Close modal on backdrop
+document.getElementById('modal-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+});
+
+// Drink choice
+document.getElementById('drink-grid').addEventListener('click', e => {
+  const ch = e.target.closest('[data-drink]');
+  if (ch) { selDrink = ch.dataset.drink; renderModal(); }
+});
+
+// Food choice
+document.getElementById('food-grid').addEventListener('click', e => {
+  const ch = e.target.closest('[data-food]');
+  if (ch) { selFood = ch.dataset.food; renderModal(); }
+});
+
+// Custom inputs live preview
+['inp-vol','inp-deg'].forEach(id =>
+  document.getElementById(id).addEventListener('input', updateGramsPreview)
+);
+
+// Confirm add drink
+document.getElementById('btn-confirm-drink').addEventListener('click', () => {
+  const timeVal = document.getElementById('inp-time').value;
+  if (!timeVal) return;
+  const [hh, mm] = timeVal.split(':').map(Number);
+  const ts = new Date(); ts.setHours(hh, mm, 0, 0);
+
+  const vol = parseFloat(document.getElementById('inp-vol').value) || 250;
+  const deg = parseFloat(document.getElementById('inp-deg').value) || 5;
+
+  state.drinks.push(buildDrink(selDrink, selFood, ts.getTime(), vol, deg));
+  saveState();
+  closeModal();
+  update();
+});
+
+// Delete drink
+document.getElementById('drinks-list').addEventListener('click', e => {
+  const btn = e.target.closest('.btn-del');
+  if (btn) {
+    state.drinks = state.drinks.filter(d => d.id !== btn.dataset.id);
+    saveState(); update();
+  }
+});
+
+// Clear all
+document.getElementById('btn-clear').addEventListener('click', () => {
+  if (confirm('Effacer tous les verres de la journée ?')) {
+    state.drinks = [];
+    saveState(); update();
+  }
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+
+loadState();
+
+// Reflect loaded profile in UI
+document.getElementById('inp-weight').value = state.weight;
+document.getElementById('btn-male').className   = state.gender === 'male'   ? 'active' : '';
+document.getElementById('btn-female').className = state.gender === 'female' ? 'active' : '';
+
+update();
+setInterval(update, 60_000);   // refresh every minute
+</script>
+</body>
+</html>
