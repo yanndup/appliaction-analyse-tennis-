@@ -328,7 +328,6 @@
 
 <script>
 var LEGAL = 0.5, YOUNG = 0.2, ELIM = 0.15;
-var CHART_WIN = 8 * 3600000;
 
 var DRINKS = [
   { id:'b25',   e:'🍺', n:'Bière 25cl',     s:'25cl',  vol:250, deg:5  },
@@ -353,7 +352,6 @@ var ST = { weight:70, gender:'male', drinks:[], customDegs:{} };
 var SEL_DRINK = 'b25', SEL_FOOD = 'empty', SEL_DEG = 5.0;
 var EDITING_ID = null;
 var lastPts = [];
-var chartPanMs = 0, chartTouchX = null, chartTouchPan = null;
 var modalCloseTimeout = null;
 
 function pad(n) { return n < 10 ? '0'+n : ''+n; }
@@ -531,18 +529,9 @@ function drawChart(pts) {
 
   var now = Date.now();
   var dataStart = pts[0].ts, dataEnd = pts[pts.length-1].ts;
-  var dataSpan = dataEnd - dataStart;
-  var viewStart, viewEnd;
-
-  if (dataSpan <= CHART_WIN) {
-    viewStart = dataStart - 1800000; viewEnd = dataEnd + 1800000; hint.style.display='none';
-  } else {
-    var ctr = now + chartPanMs;
-    viewStart = ctr - CHART_WIN/2; viewEnd = ctr + CHART_WIN/2;
-    if (viewStart < dataStart - 1800000) { viewStart = dataStart-1800000; viewEnd = viewStart+CHART_WIN; }
-    if (viewEnd   > dataEnd   + 1800000) { viewEnd = dataEnd+1800000; viewStart = viewEnd-CHART_WIN; }
-    hint.style.display = 'block';
-  }
+  var viewStart = dataStart - 1800000;
+  var viewEnd   = dataEnd   + 900000;
+  hint.style.display = 'none';
 
   var wrap = canvas.parentElement;
   var CW = wrap.clientWidth || 300, CH = 220;
@@ -636,7 +625,7 @@ function drawChart(pts) {
   }
 
   ctx.fillStyle='#888899'; ctx.font='10px -apple-system,sans-serif'; ctx.textAlign='center';
-  var spanH=(viewEnd-viewStart)/3600000, hStep=spanH<=6?1:spanH<=12?2:3;
+  var spanH=(viewEnd-viewStart)/3600000, hStep=spanH<=6?1:spanH<=12?2:spanH<=20?3:6;
   var tl = new Date(viewStart); tl.setMinutes(0,0,0);
   while (tl.getTime() <= viewEnd) {
     var txp = xp(tl.getTime());
@@ -650,34 +639,8 @@ function drawChart(pts) {
   ctx.strokeStyle='#2a2a3a'; ctx.lineWidth=1; ctx.setLineDash([]);
   ctx.strokeRect(ml,mt,pw,ph);
 
-  if (dataSpan > CHART_WIN) {
-    var totalSpan = dataSpan + 3600000;
-    var p1 = Math.max(0, Math.min(1, (viewStart-(dataStart-1800000))/totalSpan));
-    var p2 = Math.max(0, Math.min(1, (viewEnd  -(dataStart-1800000))/totalSpan));
-    var sy = mt+ph+26;
-    ctx.fillStyle='#2a2a3a'; ctx.fillRect(ml, sy, pw, 3);
-    ctx.fillStyle='#7c6fe0'; ctx.fillRect(ml+pw*p1, sy, pw*(p2-p1), 3);
-  }
 }
 
-function initChartTouch() {
-  var canvas = document.getElementById('bac-canvas');
-  canvas.addEventListener('touchstart', function(e) {
-    if (e.touches.length !== 1) return;
-    chartTouchX = e.touches[0].clientX;
-    chartTouchPan = chartPanMs;
-  }, {passive: true});
-  canvas.addEventListener('touchmove', function(e) {
-    if (chartTouchX === null || e.touches.length !== 1) return;
-    e.preventDefault();
-    var dx = e.touches[0].clientX - chartTouchX;
-    var pxW = canvas.clientWidth - 52;
-    if (pxW <= 0) return;
-    chartPanMs = chartTouchPan - dx * (CHART_WIN / pxW);
-    drawChart(lastPts);
-  }, {passive: false});
-  canvas.addEventListener('touchend', function() { chartTouchX = null; });
-}
 
 function update() {
   lastPts = buildCurve();
@@ -879,7 +842,6 @@ loadST();
 document.getElementById('inp-weight').value = ST.weight;
 document.getElementById('btn-male').className   = ST.gender==='male'   ? 'gbtn on' : 'gbtn';
 document.getElementById('btn-female').className = ST.gender==='female' ? 'gbtn on' : 'gbtn';
-initChartTouch();
 update();
 setInterval(update, 60000);
 </script>
