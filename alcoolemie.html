@@ -621,23 +621,35 @@ function renderDGrid() {
   var html='';
   for (var i=0;i<DRINKS.length;i++) {
     var d=DRINKS[i];
-    html+='<button type="button" class="dchoice'+(SEL_DRINK===d.id?' on':'')+'" onclick="pickDrink(\''+d.id+'\')">'+
-      '<div class="dc-em">'+d.e+'</div>'+
-      '<div class="dc-nm">'+d.n+'</div>'+
-      '<div class="dc-sb">'+d.s+'</div></button>';
+    var sel=SEL_DRINK===d.id?' on':'';
+    html+='<button type="button" class="dchoice'+sel+'" data-id="'+d.id+'">';
+    html+='<div class="dc-em">'+d.e+'</div>';
+    html+='<div class="dc-nm">'+d.n+'</div>';
+    html+='<div class="dc-sb">'+d.s+'</div></button>';
   }
-  document.getElementById('drink-grid').innerHTML=html;
-  document.getElementById('cust-section').style.display = SEL_DRINK==='cust'?'block':'none';
+  var grid=document.getElementById('drink-grid');
+  grid.innerHTML=html;
+  document.getElementById('cust-section').style.display=SEL_DRINK==='cust'?'block':'none';
+  var btns=grid.getElementsByTagName('button');
+  for (var i=0;i<btns.length;i++) {
+    btns[i].onclick=(function(id){ return function(){ pickDrink(id); }; })(btns[i].getAttribute('data-id'));
+  }
 }
 function renderFGrid() {
   var html='';
   for (var i=0;i<FOODS.length;i++) {
     var f=FOODS[i];
-    html+='<button type="button" class="fchoice'+(SEL_FOOD===f.id?' on':'')+'" onclick="pickFood(\''+f.id+'\')">'+
-      '<div class="fc-em">'+f.e+'</div>'+
-      '<div class="fc-nm">'+f.n+'</div></button>';
+    var sel=SEL_FOOD===f.id?' on':'';
+    html+='<button type="button" class="fchoice'+sel+'" data-id="'+f.id+'">';
+    html+='<div class="fc-em">'+f.e+'</div>';
+    html+='<div class="fc-nm">'+f.n+'</div></button>';
   }
-  document.getElementById('food-grid').innerHTML=html;
+  var grid=document.getElementById('food-grid');
+  grid.innerHTML=html;
+  var btns=grid.getElementsByTagName('button');
+  for (var i=0;i<btns.length;i++) {
+    btns[i].onclick=(function(id){ return function(){ pickFood(id); }; })(btns[i].getAttribute('data-id'));
+  }
 }
 
 function pickDrink(id) { SEL_DRINK=id; renderDGrid(); refreshPreview(); }
